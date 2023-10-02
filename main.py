@@ -1,14 +1,17 @@
 import sys
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5 import QtWidgets as QtW
+from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5 import QtCore, QtGui;
 
 def window():
     app = QApplication(sys.argv)
-    w = QWidget()
-    b = QLabel(w)
-    b.setText("Hello World!")
-    w.setGeometry(100,100,200,50)
-    b.move(50,20)
+    w = QtW.QMainWindow()
+    
+    panelOpciones = QtW.QGroupBox(w)
+    panelOpciones.setGeometry(0,0,200,200)
+    panelOpciones.setStyleSheet("background-color:blue")
+
+    w.setGeometry(300,300,1080,720)
     w.setWindowTitle("Proyecto Ciencias")
     w.show()
     sys.exit(app.exec_())
