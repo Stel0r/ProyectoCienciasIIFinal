@@ -9,6 +9,9 @@ from indicesCanvas import indiceCanvas
 
 class IndicesView(QtW.QGroupBox):
 
+    def generarGrafica():
+        self.canvas
+
     def __init__(self,p:QWidget):
         super().__init__(p)
         self.canvas = indiceCanvas(self)
@@ -30,7 +33,7 @@ class IndicesView(QtW.QGroupBox):
         label.move(120,565)
         label.setFont(QFont("Arial",10,QFont.Bold))
         opcionTipoIndice = QtW.QComboBox(self)
-        opcionTipoIndice.addItems(["Primarios","Secundarios"])
+        opcionTipoIndice.addItems(["Primario","Secundario"])
         opcionTipoIndice.move(220,560)
         opcionTipoIndice.resize(120,30)
         opcionTipoIndice.setFont(QFont("Arial",10,QFont.Bold))
@@ -85,6 +88,10 @@ class IndicesView(QtW.QGroupBox):
         botonGenerar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
                                    "QPushButton::hover{background-color :#80a7e8;}"
                                    "QPushButton::pressed{background-color:#7499d6; }")
+        botonGenerar.clicked.connect = generarGrafica
+
+    
+
 
         
 
