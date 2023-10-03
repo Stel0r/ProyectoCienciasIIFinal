@@ -8,25 +8,23 @@ class TransfClaves():
     origen = posicion
     save = True
     while save:
+      if recorrido >= self.tamaño:
+        recorrido = 0
+      if recorrido == origen - 1:
+        self.mError = "La estructura esta llena no se pudo solucionar la colicion de la clave " + str(origen)
+        save = False
+        break
       if recorrido + 1 not in self.estructura:
         self.estructura[recorrido +1] = valorCol
         save = False
         recorrido = recorrido + 1
         self.mSolColision = "Solucion clave " + str(recorrido) + " del valor " + str(valorCol)
         break
-      if recorrido == self.tamaño - 1:
-        ps = 0
-      if recorrido == origen - 1:
-        self.mError = "La estructura esta llena no se pudo solucionar la colicion de la clave " + str(origen)
-        save = False
-        break
       recorrido+=1
 
   def solColiCuadratica(self, valorCol, posicion):
-    save = True
-    i = 1
-    while save:
-      nuevaClave = posicion + i**2
+    for i in range(0, self.tamaño):
+      nuevaClave = posicion + (i + 1)**2
       if nuevaClave >= self.tamaño:
         nuevaClave = nuevaClave % self.tamaño
       if nuevaClave not in self.estructura:
@@ -34,7 +32,7 @@ class TransfClaves():
         self.mSolColision = "Solucion clave " + str(nuevaClave) + " del valor " + str(valorCol)
         save = False
         break
-      i+=1 
+    self.mError = "El valor " + str(valorCol) + " no se pudo solucionar su colision con Cuadratica"
 
   def solColiDobleHash(self, valorCol, posicion):
     save = True
@@ -45,7 +43,7 @@ class TransfClaves():
         self.estructura[d] = valorCol
         self.mSolColision = "Solucion clave " + str(d) + " del valor " + str(valorCol)
         break
-    self.mError = "El valor" + str(valorCol) + " no se pudo solucionar su colision todos lo numeros pares no disponibles"
+    self.mError = "El valor " + str(valorCol) + " no se pudo solucionar su colision con Doble Hash"
 
     
   def ordenar(self):
@@ -100,7 +98,7 @@ class TransfClaves():
         self.mColision = "El elemento "+ str(value) + " presenta una colision con "+str(self.estructura.get(clave))+ " al intentar guardarlo con la clave "+str(clave)
         if self.colision == "Lineal":
           self.solColiLineal(value, clave)
-        elif self.colision == "Cuadratica":
+        elif self.colision == "Cuadratico":
           self.solColiCuadratica(value, clave)
         elif self.colision == "Doble Hash":
            self.solColiDobleHash(value, clave)

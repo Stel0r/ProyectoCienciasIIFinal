@@ -19,7 +19,7 @@ class HashView(QtW.QGroupBox):
         self.tabla = QtW.QTableWidget(self)
         self.tabla.setColumnCount(2)
         self.tabla.setHorizontalHeaderLabels(["Clave", "Valor"])
-        self.tabla.setGeometry(780, 20, 270, 500)
+        self.tabla.setGeometry(780, 20, 270, 650)
         self.tabla.horizontalScrollBar().setVisible(False)
         self.tabla.setColumnWidth(0, 135)
         self.tabla.setColumnWidth(1, 135)
@@ -77,7 +77,7 @@ class HashView(QtW.QGroupBox):
         self.registroProcess = QtW.QTextEdit(self)
         self.registroProcess.setFrameStyle(1)
         self.registroProcess.move(10, 370)
-        self.registroProcess.resize(700, 300)
+        self.registroProcess.resize(750, 300)
         self.registroProcess.setReadOnly(True)
         self.registroProcess.setFont(QFont("Arial", 10))
 
@@ -95,6 +95,14 @@ class HashView(QtW.QGroupBox):
                                       "QPushButton::pressed{background-color:#7499d6; }")
         self.bnIngresar.clicked.connect(self.ingresarDato)
 
+        self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
+        self.bnReiniciar.setGeometry(570, 140, 170, 30)
+        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#f4c3a5; border:1px solid black;}"
+                                      "QPushButton::hover{background-color :#80a7e8;}"
+                                      "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnReiniciar.clicked.connect(self.reiniciar)
+        self.bnReiniciar.setEnabled(False)
+
     def testEstructure(self):
         t = 0
         try:
@@ -110,6 +118,12 @@ class HashView(QtW.QGroupBox):
         self.hash = TransfClaves(self.opcionMetodoHash.currentText(), t, self.opcionSolColision.currentText())
         self.processSuccess("Estructura definida")
         self.errWarning("")
+        self.crearTabla()
+        self.bnEstructura.setEnabled(False)
+        self.opcionMetodoHash.setEnabled(False)
+        self.opcionSolColision.setEnabled(False)
+        self.tamanoEstructura.setEnabled(False)
+        self.bnReiniciar.setEnabled(True)
 
     def ingresarDato(self):
         d = 0
@@ -129,7 +143,7 @@ class HashView(QtW.QGroupBox):
         self.hash.ingresarValor(d)
         self.processSuccess("Dato Ingresado (" + str(d) + ")")
         self.errWarning("")
-        self.mostrarTabla()
+        self.cargarDatos()
         self.registrarProceso()
     def errWarning(self, mensaje):
         self.labelWarning.setText("Error: " + mensaje)
@@ -137,14 +151,24 @@ class HashView(QtW.QGroupBox):
     def processSuccess(self, mensaje):
         self.labelSuccess.setText("Success: " + mensaje)
 
-    def mostrarTabla(self):
+    def reiniciar(self):
+        self.hash = None
         self.tabla.setRowCount(0)
-        fila = 0
+        self.bnEstructura.setEnabled(True)
+        self.opcionMetodoHash.setEnabled(True)
+        self.opcionSolColision.setEnabled(True)
+        self.tamanoEstructura.setEnabled(True)
+        self.bnReiniciar.setEnabled(False)
+        self.registroProcess.setText("")
+
+    def crearTabla(self):
+        for i in range(0, self.hash.tamaño):
+            self.tabla.insertRow(i)
+            self.tabla.setItem(i, 0, QtW.QTableWidgetItem(str(i + 1)))
+
+    def cargarDatos(self):
         for i in self.hash.estructura:
-            self.tabla.insertRow(fila)
-            self.tabla.setItem(fila, 0, QtW.QTableWidgetItem(str(i)))
-            self.tabla.setItem(fila, 1, QtW.QTableWidgetItem(str(self.hash.estructura[i])))
-            fila+=1
+            self.tabla.setItem(i - 1, 1, QtW.QTableWidgetItem(str(self.hash.estructura[i])))
 
     def registrarProceso(self):
         if self.hash.mError != "":
