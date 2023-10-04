@@ -50,7 +50,7 @@ class IndicesView(QtW.QGroupBox):
         self.tabla.setFont(QFont("Arial",7))
         self.tabla.horizontalScrollBar().setVisible(False)
         self.tabla.setColumnWidth(0,30)
-        self.tabla.setColumnWidth(1,120)
+        self.tabla.setColumnWidth(1,130)
         self.tabla.setColumnWidth(2,120)
 
         #seccion de entradas
@@ -99,7 +99,7 @@ class IndicesView(QtW.QGroupBox):
         self.campoTamReg.resize(140,30)
         self.campoTamReg.setFont(QFont("Arial",9))
 
-        label = QtW.QLabel("Tamaño Reg. Indice (b)",self)
+        label = QtW.QLabel("Tamaño Regi. Indice (b)",self)
         label.move(680,605)
         label.setFont(QFont("Arial",9,QFont.Bold))
         self.campoTamRegIn = QtW.QTextEdit(self)

@@ -77,7 +77,6 @@ class indiceCanvas(QtW.QWidget):
         painter.begin(self)
         painter.fillRect(self.rect(),QtGui.QColorConstants.White)
         painter.setPen(QtGui.QPen(QtGui.QColorConstants.Black,3))
-        painter.drawRect(self.rect())
         if(self.activo):
             separacion = 100
             diffEstructura = 30
