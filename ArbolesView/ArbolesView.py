@@ -9,15 +9,14 @@ import copy
 class ArbolesView(QGroupBox):
     def __init__(self,p:QWidget):
         super().__init__(p)
-        print(ord('A'))
         self.pasos:list[Nodo] = []
 
         self.alfabeto = {}
 
         self.canvas = ArbolesCanvas(None)
-
+        self.canvas.setGeometry(0,0,1200,650)
         self.canvasArea = QScrollArea(self)
-        self.canvasArea.setGeometry(40,20,1200,652)
+        self.canvasArea.setGeometry(40,20,802,652)
         self.canvasArea.setWidget(self.canvas)
 
         self.setStyleSheet("background-color:white")
@@ -80,7 +79,6 @@ class ArbolesView(QGroupBox):
         for i in self.campoPalabra.toPlainText().upper():
             self.alfabeto[i] = bin(ord(i)-64).replace("0b","")
             self.alfabeto[i] = ("0"*(5-len(self.alfabeto[i])))+self.alfabeto[i]
-        print(self.alfabeto)
 
         #genera el arbol segun estructura
         if self.opcionTipoArbol.currentText() == "Digital":
@@ -88,11 +86,12 @@ class ArbolesView(QGroupBox):
             nodo = raiz
             for i in self.alfabeto:
                 #generar arbol para paso
+                digito = 0
                 for x in self.alfabeto[i]:
+                    digito += 1
                     if len(nodo.hijos) == 0:
                         nodo.hijos.append(Nodo())
                         nodo.hijos.append(Nodo())
-                        raiz.niveles += 1
                     if nodo.hijos[int(x)].valor == "":
                         nodo.hijos[int(x)].valor = i
                         nodo = raiz
@@ -100,7 +99,12 @@ class ArbolesView(QGroupBox):
                     else:
                         nodo = nodo.hijos[int(x)]
                         continue
+                if digito  > raiz.niveles:
+                    raiz.niveles = digito
                 self.pasos.append(copy.deepcopy(raiz))
+        elif self.opcionTipoArbol.currentText() == "Residuos (TRIES)":
+            print("en desarrollo")
+            
         self.opcionPasos.clear()
         for u in range(1,len(self.pasos)+1):
             self.opcionPasos.addItem(str(u))
