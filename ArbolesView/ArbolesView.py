@@ -14,7 +14,7 @@ class ArbolesView(QGroupBox):
         self.alfabeto = {}
 
         self.canvas = ArbolesCanvas(None)
-        self.canvas.setGeometry(0,0,1200,650)
+        self.canvas.setGeometry(0,0,2000,650)
         self.canvasArea = QScrollArea(self)
         self.canvasArea.setGeometry(40,20,802,652)
         self.canvasArea.setWidget(self.canvas)
@@ -25,12 +25,14 @@ class ArbolesView(QGroupBox):
         self.tabla.setColumnCount(2)
         self.tabla.verticalHeader().setVisible(False)
         self.tabla.setHorizontalHeaderLabels(["Codigo","Letra"])
-        self.tabla.setGeometry(860,20,200,250)
+        self.tabla.setGeometry(860,20,200,310)
+        self.tabla.setColumnWidth(0,100)
+        self.tabla.setColumnWidth(1,100)
         self.tabla.setFont(QFont("Arial",7))
         self.tabla.horizontalScrollBar().setVisible(False)
 
         panelOpciones = QGroupBox(self)
-        panelOpciones.setGeometry(860,290,200,380)
+        panelOpciones.setGeometry(860,345,200,330)
         panelOpciones.setStyleSheet("QGroupBox{border:1px solid black}")
 
         label = QLabel("Palabra",panelOpciones)
@@ -49,18 +51,16 @@ class ArbolesView(QGroupBox):
         self.opcionTipoArbol.setFont(QFont("Arial",10))
         self.opcionTipoArbol.addItems(["Digital","Residuos (TRIES)","Residuos multiples"])
 
-
-
         label = QLabel("paso",panelOpciones)
-        label.move(35,265)
+        label.move(35,235)
         label.setFont(QFont("Arial",10))
         self.opcionPasos = QComboBox(panelOpciones)
-        self.opcionPasos.setGeometry(70,260,100,30)
+        self.opcionPasos.setGeometry(70,230,100,30)
         self.opcionPasos.setFont(QFont("Arial",10))
         self.opcionPasos.currentIndexChanged.connect(self.actualizarCanvas)
 
         botonGenerar = QPushButton("Generar",panelOpciones)
-        botonGenerar.setGeometry(30,300,140,30)
+        botonGenerar.setGeometry(30,270,140,30)
         botonGenerar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
                                    "QPushButton::hover{background-color :#80a7e8;}"
                                    "QPushButton::pressed{background-color:#7499d6; }")
@@ -79,11 +79,10 @@ class ArbolesView(QGroupBox):
         for i in self.campoPalabra.toPlainText().upper():
             self.alfabeto[i] = bin(ord(i)-64).replace("0b","")
             self.alfabeto[i] = ("0"*(5-len(self.alfabeto[i])))+self.alfabeto[i]
-
+        raiz = Nodo()
+        nodo = raiz
         #genera el arbol segun estructura
         if self.opcionTipoArbol.currentText() == "Digital":
-            raiz = Nodo()
-            nodo = raiz
             for i in self.alfabeto:
                 #generar arbol para paso
                 digito = 0
@@ -103,16 +102,44 @@ class ArbolesView(QGroupBox):
                     raiz.niveles = digito
                 self.pasos.append(copy.deepcopy(raiz))
         elif self.opcionTipoArbol.currentText() == "Residuos (TRIES)":
-            print("en desarrollo")
-            
+            raiz.hijos.append(Nodo())
+            raiz.hijos.append(Nodo())
+            for i in self.alfabeto:
+                digito = 0
+                save = False
+                nodo = raiz
+                while not save:
+                    if (len(nodo.hijos) == 0):
+                        if nodo.valor == "":
+                            nodo.valor = i
+                            save = True
+                            break
+                        else:
+                            nodo.hijos.append(Nodo())
+                            nodo.hijos.append(Nodo())
+                            print(digito)
+                            nodo.hijos[int(self.alfabeto[nodo.valor][digito])].valor = nodo.valor
+                            nodo.valor = ""
+                    else:
+                        nodo = nodo.hijos[int(self.alfabeto[i][digito])]
+                        digito += 1
+                if digito > raiz.niveles:
+                    raiz.niveles = 4
+                self.pasos.append(copy.deepcopy(raiz))
         self.opcionPasos.clear()
         for u in range(1,len(self.pasos)+1):
             self.opcionPasos.addItem(str(u))
+        contador = 0
+        self.tabla.setRowCount(0)
+        for i in self.alfabeto:
+            self.tabla.insertRow(contador)
+            self.tabla.setItem(contador,0,QTableWidgetItem(i))
+            self.tabla.setItem(contador,1,QTableWidgetItem(self.alfabeto[i]))
+            contador += 1
                     
-
-
-
         
+
+
 
     
         
