@@ -49,7 +49,7 @@ class ArbolesView(QGroupBox):
         self.opcionTipoArbol = QComboBox(panelOpciones)
         self.opcionTipoArbol.setGeometry(30,130,140,30)
         self.opcionTipoArbol.setFont(QFont("Arial",10))
-        self.opcionTipoArbol.addItems(["Digital","Residuos (TRIES)","Residuos multiples"])
+        self.opcionTipoArbol.addItems(["Digital","Residuos (TRIES)"])
 
         label = QLabel("paso",panelOpciones)
         label.move(35,235)
