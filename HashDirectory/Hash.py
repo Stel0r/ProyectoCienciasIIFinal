@@ -2,12 +2,13 @@ import math
 import time
 
 class TransfClaves():
-
   def solColiLineal(self, valorCol, posicion):
     recorrido = posicion
     origen = posicion
     save = True
+    count = 0
     while save:
+      count+=1
       if recorrido >= self.tamaño:
         recorrido = 0
       if recorrido == origen - 1:
@@ -18,7 +19,7 @@ class TransfClaves():
         self.estructura[recorrido +1] = valorCol
         save = False
         recorrido = recorrido + 1
-        self.mSolColision = "Solucion clave " + str(recorrido) + " del valor " + str(valorCol)
+        self.mSolColision = "Solucion Lineal clave: " + str(recorrido) + ", del valor: " + str(valorCol) + " se busco un espacio " + str(count) + " veces"
         break
       recorrido+=1
 
@@ -27,23 +28,30 @@ class TransfClaves():
       nuevaClave = posicion + (i + 1)**2
       if nuevaClave >= self.tamaño:
         nuevaClave = nuevaClave % self.tamaño
+
       if nuevaClave not in self.estructura:
         self.estructura[nuevaClave] = valorCol
-        self.mSolColision = "Solucion clave " + str(nuevaClave) + " del valor " + str(valorCol)
-        save = False
-        break
-    self.mError = "El valor " + str(valorCol) + " no se pudo solucionar su colision con Cuadratica"
+        self.mSolColision = "Solucion cuadratica clave: " + str(nuevaClave) + " del valor: " + str(valorCol) + ", ultimo calculo: " + str(i+1) + "^2"
+        return
+
+    self.mError = ("El valor " + str(valorCol) + " no se pudo solucionar su colision con Cuadratica, se realizaron: " + str(self.tamaño) +
+                   " calculos de solución cuadratica sin resultados efectivos")
 
   def solColiDobleHash(self, valorCol, posicion):
-    save = True
+    danterior = posicion
     d = posicion
     for i in range(0, self.tamaño):
+      danterior = d
       d = ((d + 1) % self.tamaño) + 1
       if d not in self.estructura:
         self.estructura[d] = valorCol
-        self.mSolColision = "Solucion clave " + str(d) + " del valor " + str(valorCol)
-        break
-    self.mError = "El valor " + str(valorCol) + " no se pudo solucionar su colision con Doble Hash"
+        self.mSolColision = ("Solucion Doble Hash clave: " + str(d) + ", del valor: " + str(valorCol) +
+                             ", ultimo calulo realizado H(" + str(danterior) + ") = ((" + str(
+                  danterior) + " + 1) mod " + str(self.tamaño) + ") + 1")
+        return
+    self.mError = ("El valor " + str(
+      valorCol) + " no se pudo solucionar su colision con Doble Hash, se realizaron: " + str(self.tamaño) +
+                   " calculos de solución cuadratica sin resultados efectivos")
 
     
   def ordenar(self):

@@ -53,7 +53,7 @@ class HashView(QtW.QGroupBox):
         self.tamanoEstructura.resize(140, 30)
         self.tamanoEstructura.setFont(QFont("Arial", 10))
 
-        label = QtW.QLabel("Ingresar Dato", self)
+        label = QtW.QLabel("Ingresar Registro (Solo se admiten registro numericos)", self)
         label.move(10, 100)
         label.setFont(QFont("Arial", 10, QFont.Bold))
         self.ingresoDato = QtW.QTextEdit(self)
@@ -64,14 +64,14 @@ class HashView(QtW.QGroupBox):
 
         self.labelWarning = QtW.QLabel("Error: ", self)
         self.labelWarning.move(10, 300)
-        self.labelWarning.setFont(QFont("Arial", 10, QFont.Bold))
-        self.labelWarning.resize(400, 30)
+        self.labelWarning.setFont(QFont("Arial", 14, QFont.Bold))
+        self.labelWarning.resize(750, 30)
         self.labelWarning.setStyleSheet("color:red")
 
         self.labelSuccess = QtW.QLabel("Success: ", self)
         self.labelSuccess.move(10, 330)
-        self.labelSuccess.setFont(QFont("Arial", 10, QFont.Bold))
-        self.labelSuccess.resize(400, 30)
+        self.labelSuccess.setFont(QFont("Arial", 14, QFont.Bold))
+        self.labelSuccess.resize(750, 30)
         self.labelSuccess.setStyleSheet("color:green")
 
         self.registroProcess = QtW.QTextEdit(self)
@@ -86,6 +86,7 @@ class HashView(QtW.QGroupBox):
         self.bnEstructura.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#80a7e8;}"
                                         "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnEstructura.setFont(QFont("Arial", 10))
         self.bnEstructura.clicked.connect(self.testEstructure)
 
         self.bnIngresar = QtW.QPushButton("Agregar", self)
@@ -93,6 +94,7 @@ class HashView(QtW.QGroupBox):
         self.bnIngresar.setStyleSheet("QPushButton{background-color:#a4c3a5; border:1px solid black;}"
                                       "QPushButton::hover{background-color :#80a7e8;}"
                                       "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnIngresar.setFont(QFont("Arial", 10))
         self.bnIngresar.clicked.connect(self.ingresarDato)
 
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
@@ -100,6 +102,7 @@ class HashView(QtW.QGroupBox):
         self.bnReiniciar.setStyleSheet("QPushButton{background-color:#f4c3a5; border:1px solid black;}"
                                       "QPushButton::hover{background-color :#80a7e8;}"
                                       "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnReiniciar.setFont(QFont("Arial", 10))
         self.bnReiniciar.clicked.connect(self.reiniciar)
         self.bnReiniciar.setEnabled(False)
 
@@ -109,10 +112,10 @@ class HashView(QtW.QGroupBox):
             if(self.tamanoEstructura.toPlainText() != ''):
                 t = int(self.tamanoEstructura.toPlainText())
             if(t <= 0):
-                self.errWarning("Por Favor ingrese un tamaño mayor a 0")
+                self.errWarning("Por Favor el tamaño debe ser mayor a 0")
                 return
         except:
-            self.errWarning("Ingreso para tamaño caracteres no numericos")
+            self.errWarning("Ingresó para tamaño letras o caracteres, ingrese valores numericos")
             return
 
         self.hash = TransfClaves(self.opcionMetodoHash.currentText(), t, self.opcionSolColision.currentText())
@@ -134,10 +137,10 @@ class HashView(QtW.QGroupBox):
             if(self.ingresoDato.toPlainText() != ''):
                 d = int(self.ingresoDato.toPlainText())
             if(d <= 0):
-                self.errWarning("Por Favor ingrese un dato mayor a 0")
+                self.errWarning("Por Favor ingrese un Registro numerico mayor a 0")
                 return
         except:
-            self.errWarning("Ingreso para dato caracteres no numericos")
+            self.errWarning("Ingresó por Registro, caracteres o letras, ingrese registros numericos")
             return
 
         self.hash.ingresarValor(d)
@@ -160,6 +163,7 @@ class HashView(QtW.QGroupBox):
         self.tamanoEstructura.setEnabled(True)
         self.bnReiniciar.setEnabled(False)
         self.registroProcess.setText("")
+        self.labelSuccess.setText("Success:")
 
     def crearTabla(self):
         for i in range(0, self.hash.tamaño):
