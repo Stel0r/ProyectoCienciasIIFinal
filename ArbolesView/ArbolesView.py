@@ -30,7 +30,6 @@ class ArbolesView(QGroupBox):
         self.tabla.setColumnWidth(1,100)
         self.tabla.setFont(QFont("Arial",7))
         self.tabla.horizontalScrollBar().setVisible(False)
-        self.tabla.
 
         panelOpciones = QGroupBox(self)
         panelOpciones.setGeometry(860,345,200,330)
