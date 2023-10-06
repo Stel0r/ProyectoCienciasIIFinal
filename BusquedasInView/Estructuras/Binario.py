@@ -13,7 +13,7 @@ class Binario(EstructuraInterna):
                 return "(Binario) el registro numerico "+str(valor)+" se encontro en "+str(central+1)
             elif valor < self.matriz[central] and not tamaño <= 1:
                 self.matriz = self.matriz[:central]
-            elif self.valor > self.matriz[central] and not tamaño <= 1:
+            elif valor > self.matriz[central] and not tamaño <= 1:
                 self.matriz = self.matriz[central + 1:]
             elif tamaño <= 1:
                 return f"(Binario) el registro "+str(valor)+" no se encontro"

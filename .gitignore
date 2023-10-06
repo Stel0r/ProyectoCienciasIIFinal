@@ -4,3 +4,7 @@
 __pycache__
 .vscode
 *.pyc
+*.pyc
+*.pyc
+HashDirectory/__pycache__/Hash.cpython-311.pyc
+HashDirectory/__pycache__/ventanaHash.cpython-311.pyc
