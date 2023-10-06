@@ -11,7 +11,7 @@ class Binario(EstructuraInterna):
         while True:
             central = round(tamaño / 2) - 1
             if valor == mat[central]:
-                return "(Binario) el registro numerico "+str(valor)+" se encontro en "+str(central+1)
+                return "(Binario) el registro numerico "+str(valor)+" se encontro en "+str(self.matriz.index(valor) + 1)
             elif valor < mat[central] and not tamaño <= 1:
                 mat = mat[:central]
             elif valor > mat[central] and not tamaño <= 1:
