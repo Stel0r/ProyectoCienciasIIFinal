@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from BusquedasInView.Estructuras.Binario import Binario
 
 from BusquedasInView.Estructuras.EstructuraInterna import EstructuraInterna
+from BusquedasInView.Estructuras.Secuencial import Secuencial
 
 class BusquedasInView(QGroupBox):
     def __init__(self, p:QWidget):
@@ -16,32 +18,143 @@ class BusquedasInView(QGroupBox):
         self.tabla.setHorizontalHeaderLabels(["Valor"])
         self.tabla.setGeometry(880, 20, 170, 650)
         self.tabla.horizontalScrollBar().setVisible(False)
-        self.tabla.setColumnWidth(0, 170)
+        self.tabla.setColumnWidth(0, 140)
 
         panelEstructura = QGroupBox(self)
-        panelEstructura.setGeometry(10,20,860,420)
+        panelEstructura.setGeometry(10,20,860,320)
         panelEstructura.setStyleSheet("QGroupBox{border:1px solid black}")
 
         label = QLabel("Creacion Estructura",panelEstructura)
-        label.move(20,10)
+        label.move(120,60)
 
         #seccion de entradas
         label = QLabel("Tipo de Busqueda",self)
-        label.move(35,65)
+        label.move(185,125)
         label.setFont(QFont("Arial",9,QFont.Bold))
-        self.opcionTipoIndice = QComboBox(self)
-        self.opcionTipoIndice.addItems(["Secuencial","Binaria"])
-        self.opcionTipoIndice.move(150,60)
-        self.opcionTipoIndice.resize(120,30)
-        self.opcionTipoIndice.setFont(QFont("Arial",9,QFont.Bold))
+        self.opcionTipoBusq = QComboBox(self)
+        self.opcionTipoBusq.addItems(["Secuencial","Binaria"])
+        self.opcionTipoBusq.move(300,120)
+        self.opcionTipoBusq.resize(120,30)
+        self.opcionTipoBusq.setFont(QFont("Arial",9,QFont.Bold))
+        self.opcionTipoBusq.currentTextChanged.connect(self.deshabilitar)
 
         label = QLabel("Rango",self)
-        label.move(295,65)
+        label.move(445,125)
         label.setFont(QFont("Arial",9,QFont.Bold))
-        self.campoTamBloque = QTextEdit(self)
-        self.campoTamBloque.setFrameStyle(1)
-        self.campoTamBloque.move(340,60)
-        self.campoTamBloque.resize(80,30)
-        self.campoTamBloque.setFont(QFont("Arial",9))
+        self.campoRango = QTextEdit(self)
+        self.campoRango.setFrameStyle(1)
+        self.campoRango.move(490,120)
+        self.campoRango.resize(80,30)
+        self.campoRango.setFont(QFont("Arial",9))
+
+        botonGenerar = QPushButton("Generar",panelEstructura)
+        botonGenerar.setGeometry(590,100,120,30)
+        botonGenerar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#80a7e8;}"
+                                   "QPushButton::pressed{background-color:#7499d6; }")
+        botonGenerar.setCursor(QCursor(Qt.PointingHandCursor))
+        botonGenerar.clicked.connect(self.GenerarEstructura)
+        
+        self.labelTitIng = QLabel("Ingresar/Buscar",panelEstructura)
+        self.labelTitIng.move(120,160)
+        self.labelTitIng.setVisible(False)
+        
+        self.labelCampResNum = QLabel("Registro Numerico",panelEstructura)
+        self.labelCampResNum.move(200,205)
+        self.labelCampResNum.setFont(QFont("Arial",9,QFont.Bold))
+        self.labelCampResNum.setVisible(False)
+        self.campoCampResNum = QTextEdit(self)
+        self.campoCampResNum.setFrameStyle(1)
+        self.campoCampResNum.move(320,220)
+        self.campoCampResNum.resize(80,30)
+        self.campoCampResNum.setFont(QFont("Arial",9))
+        self.campoCampResNum.setVisible(False)
+
+        self.botonIngresar = QPushButton("Ingresar",panelEstructura)
+        self.botonIngresar.setGeometry(420,200,120,30)
+        self.botonIngresar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#80a7e8;}"
+                                   "QPushButton::pressed{background-color:#7499d6; }")
+        self.botonIngresar.setCursor(QCursor(Qt.PointingHandCursor))
+        self.botonIngresar.clicked.connect(self.ingresarDato)
+        self.botonIngresar.setVisible(False)
+        
+        
+        self.botonBuscar = QPushButton("Buscar",panelEstructura)
+        self.botonBuscar.setGeometry(560,200,120,30)
+        self.botonBuscar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#80a7e8;}"
+                                   "QPushButton::pressed{background-color:#7499d6; }")
+        self.botonBuscar.setCursor(QCursor(Qt.PointingHandCursor))
+        self.botonBuscar.clicked.connect(self.buscarDato)
+        self.botonBuscar.setVisible(False)
+
+        #Consola de salida
+
+        self.registroProcess = QTextEdit(self)
+        self.registroProcess.setFrameStyle(1)
+        self.registroProcess.setGeometry(10, 350,860, 320)
+        self.registroProcess.setReadOnly(True)
+        self.registroProcess.setFont(QFont("Arial", 12))
 
         
+    def GenerarEstructura(self):
+        try:
+            if(self.opcionTipoBusq.currentText() == "Secuencial"):
+                self.estructura = Secuencial([],int(self.campoRango.toPlainText()))
+            elif(self.opcionTipoBusq.currentText() == "Binaria"):
+                self.estructura = Binario([],int(self.campoRango.toPlainText()))
+            for x in range(int(self.campoRango.toPlainText())):
+                self.tabla.insertRow(x)
+            self.labelTitIng.setVisible(True)
+            self.labelCampResNum.setVisible(True)
+            self.campoCampResNum.setVisible(True)
+            self.botonIngresar.setVisible(True)
+            self.botonBuscar.setVisible(True)
+            self.imprimirTexto("Se ha creado la estructura exitosamente")
+        except Exception as e:
+            error = QMessageBox()
+            error.setText("El rango no es valido, ")
+            error.setIcon(QMessageBox.Icon.Critical)
+            print(e)
+            error.exec()
+
+    def deshabilitar(self):
+        self.tabla.setRowCount(0)
+        self.labelTitIng.setVisible(False)
+        self.labelCampResNum.setVisible(False)
+        self.campoCampResNum.setVisible(False)
+        self.botonIngresar.setVisible(False)
+        self.botonBuscar.setVisible(False)
+
+    def imprimirTexto(self,texto:str):
+        self.registroProcess.setText(self.registroProcess.toPlainText()+"\n >"+texto)
+
+    def ingresarDato(self):
+        try:
+            res = self.estructura.ingresarDato(int(self.campoCampResNum.toPlainText()))
+            self.imprimirTexto(res)
+            self.refrescarTabla()
+        except Exception as e:
+            error = QMessageBox()
+            error.setText("El Registro debe ser Numerico")
+            error.setIcon(QMessageBox.Icon.Critical)
+            print(e)
+            error.exec()
+    
+
+    def buscarDato(self):
+        try:
+            res = self.estructura.busqueda(int(self.campoCampResNum.toPlainText()))
+            self.imprimirTexto(res)
+            self.refrescarTabla()
+        except Exception as e:
+            error = QMessageBox()
+            error.setText("El Registro debe ser Numerico")
+            error.setIcon(QMessageBox.Icon.Critical)
+            print(e)
+            error.exec()
+    
+    def refrescarTabla(self):
+        for i in range(len(self.estructura.matriz)):
+            self.tabla.setItem(i,0,QTableWidgetItem(str(self.estructura.matriz[i])))
