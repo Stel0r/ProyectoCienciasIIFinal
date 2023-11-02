@@ -37,7 +37,7 @@ import math
 
 
 def calcular_tamano_bloques(total_registros):
-    tamano_bloque = int(math.sqrt(total_registros))
+    tamano_bloque = math.ceil(math.sqrt(total_registros))
     return tamano_bloque
 
 

@@ -12,6 +12,7 @@ from ExternasView import BinariaSecuencial as BS
 class ExternasView(QtW.QGroupBox):
 
     def __init__(self, p: QWidget):
+        
         super().__init__(p)
 
         self.rango = None
@@ -20,147 +21,136 @@ class ExternasView(QtW.QGroupBox):
         self.cubetas = 0
         self.hash = None
 
-        self.setStyleSheet("background-color:white")
+        self.setStyleSheet("background-color:#DECCA6")
+
+        label = QtW.QLabel("Lista de datos:", self)
+        label.move(550, 340)
+        label.setFont(QFont("Arial", 10, QFont.Bold))
 
         self.tabla = QtW.QTableWidget(self)
         self.tabla.setColumnCount(2)
         self.tabla.setHorizontalHeaderLabels(["Número", "Registro"])
-        self.tabla.setGeometry(10, 190, 270, 480)
+        self.tabla.setGeometry(550, 380, 500, 290)
         self.tabla.horizontalScrollBar().setVisible(False)
         self.tabla.setColumnWidth(0, 100)
         self.tabla.setColumnWidth(1, 100)
         self.tabla.verticalHeader().setVisible(False)
+        self.tabla.setStyleSheet("QTableWidget{border:1px solid black; background-color:#EBE6D2}")
 
         self.tablaBloques = QtW.QTableWidget(self)
         self.tablaBloques.setColumnCount(self.cubetas)
-        self.tablaBloques.setGeometry(740, 20, 320, 650)
+        self.tablaBloques.setGeometry(550, 20, 500, 300)
         self.tablaBloques.horizontalScrollBar().setVisible(True)
         self.tablaBloques.verticalHeader().setVisible(False)
+        self.tablaBloques.setStyleSheet("QTableWidget{border:1px solid black; background-color:#EBE6D2}")
 
-        label = QtW.QLabel("Rango (Múltiplos de 10)", self)
-        label.move(10, 10)
+        label = QtW.QLabel("Rango (Múltiplos de 10):", self)
+        label.move(20, 20)
         label.setFont(QFont("Arial", 10, QFont.Bold))
         self.tamanoEstructura = QtW.QTextEdit(self)
         self.tamanoEstructura.setFrameStyle(1)
-        self.tamanoEstructura.move(10, 40)
+        self.tamanoEstructura.move(20, 50)
         self.tamanoEstructura.resize(140, 30)
         self.tamanoEstructura.setFont(QFont("Arial", 10))
+        self.tamanoEstructura.setStyleSheet("background-color:#EBE6D2")
 
-        label = QtW.QLabel("Ingresar Regsitro (Registros numéricos)", self)
-        label.move(10, 100)
+        label = QtW.QLabel("Ingresar clave (Claves numéricas):", self)
+        label.move(20, 110)
         label.setFont(QFont("Arial", 10, QFont.Bold))
         self.ingresoDato = QtW.QTextEdit(self)
         self.ingresoDato.setFrameStyle(1)
-        self.ingresoDato.move(10, 140)
+        self.ingresoDato.move(20, 140)
         self.ingresoDato.resize(140, 30)
         self.ingresoDato.setFont(QFont("Arial", 10))
+        self.ingresoDato.setStyleSheet("background-color:#EBE6D2")
 
         self.opcionMetodoHash = QtW.QComboBox(self)
         self.opcionMetodoHash.addItems(["Mod", "Cuadratico", "Plegamiento", "Truncamiento", "Conversión bases"])
-        self.opcionMetodoHash.move(560, 100)
-        self.opcionMetodoHash.resize(170, 30)
+        self.opcionMetodoHash.move(180, 330)
+        self.opcionMetodoHash.resize(145, 30)
         self.opcionMetodoHash.setFont(QFont("Arial", 10, QFont.Bold))
+        self.opcionMetodoHash.setStyleSheet("background-color:#EBE6D2")
 
-        self.labelWarning = QtW.QLabel("Error: ", self)
-        self.labelWarning.move(310, 190)
-        self.labelWarning.setFont(QFont("Arial", 10, QFont.Bold))
-        self.labelWarning.resize(400, 35)
-        self.labelWarning.setStyleSheet("color:red")
-
-        self.labelSuccess = QtW.QLabel("Success: ", self)
-        self.labelSuccess.move(310, 220)
+        self.labelSuccess = QtW.QLabel("Proceso: ", self)
+        self.labelSuccess.move(20, 390)
         self.labelSuccess.setFont(QFont("Arial", 10, QFont.Bold))
         self.labelSuccess.resize(400, 30)
-        self.labelSuccess.setStyleSheet("color:green")
 
         self.registroProcess = QtW.QTextEdit(self)
         self.registroProcess.setFrameStyle(1)
-        self.registroProcess.move(310, 250)
-        self.registroProcess.resize(400, 300)
+        self.registroProcess.move(20, 420)
+        self.registroProcess.resize(500, 200)
         self.registroProcess.setReadOnly(True)
         self.registroProcess.setFont(QFont("Arial", 10))
+        self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
-        label = QtW.QLabel("Registro a buscar", self)
-        label.move(360, 25)
+        label = QtW.QLabel("Dirección a buscar:", self)
+        label.move(20, 210)
         label.setFont(QFont("Arial", 10, QFont.Bold))
-        self.txsecuencial = QtW.QTextEdit(self)
-        self.txsecuencial.setFrameStyle(1)
-        self.txsecuencial.move(510, 20)
-        self.txsecuencial.resize(40, 30)
-        self.txsecuencial.setFont(QFont("Arial", 10))
+        self.txbuscar = QtW.QTextEdit(self)
+        self.txbuscar.setFrameStyle(1)
+        self.txbuscar.move(20, 250)
+        self.txbuscar.resize(140, 30)
+        self.txbuscar.setFont(QFont("Arial", 10))
+        self.txbuscar.setStyleSheet("background-color:#EBE6D2")
 
-        label = QtW.QLabel("Registro a buscar", self)
-        label.move(360, 65)
-        label.setFont(QFont("Arial", 10, QFont.Bold))
-        self.txbinario = QtW.QTextEdit(self)
-        self.txbinario.setFrameStyle(1)
-        self.txbinario.move(510, 60)
-        self.txbinario.resize(40, 30)
-        self.txbinario.setFont(QFont("Arial", 10))
-
-        label = QtW.QLabel("Registro a buscar", self)
-        label.move(360, 105)
-        label.setFont(QFont("Arial", 10, QFont.Bold))
-        self.txhash = QtW.QTextEdit(self)
-        self.txhash.setFrameStyle(1)
-        self.txhash.move(510, 100)
-        self.txhash.resize(40, 30)
-        self.txhash.setFont(QFont("Arial", 10))
-
-        self.bnEstructura = QtW.QPushButton("Definir Rango", self)
-        self.bnEstructura.setGeometry(160, 40, 130, 30)
-        self.bnEstructura.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
-                                        "QPushButton::hover{background-color :#80a7e8;}"
-                                        "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnEstructura = QtW.QPushButton("Crear estructura", self)
+        self.bnEstructura.setGeometry(180, 50, 130, 30)
+        self.bnEstructura.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnEstructura.clicked.connect(self.testEstructure)
 
         self.bnIngresar = QtW.QPushButton("Agregar", self)
-        self.bnIngresar.setGeometry(160, 140, 130, 30)
-        self.bnIngresar.setStyleSheet("QPushButton{background-color:#a4c3a5; border:1px solid black;}"
-                                      "QPushButton::hover{background-color :#80a7e8;}"
-                                      "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnIngresar.setGeometry(180, 140, 130, 30)
+        self.bnIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnIngresar.clicked.connect(self.ingresarDato)
         self.bnIngresar.setEnabled(False)
 
-        self.bnTerminar = QtW.QPushButton("Terminar", self)
-        self.bnTerminar.setGeometry(300, 140, 130, 30)
-        self.bnTerminar.setStyleSheet("QPushButton{background-color:#a4c3a5; border:1px solid black;}"
-                                      "QPushButton::hover{background-color :#80a7e8;}"
-                                      "QPushButton::pressed{background-color:#7499d6; }")
-        self.bnTerminar.clicked.connect(self.terminar)
+        self.bnTerminar = QtW.QPushButton("Eliminar clave", self)
+        self.bnTerminar.setGeometry(320, 140, 130, 30)
+        self.bnTerminar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
+        #self.bnTerminar.clicked.connect()
         self.bnTerminar.setEnabled(False)
 
         self.bnSecuencial = QtW.QPushButton("Secuencial", self)
-        self.bnSecuencial.setGeometry(560, 20, 170, 30)
-        self.bnSecuencial.setStyleSheet("QPushButton{background-color:#46D9F3; border:1px solid black;}"
-                                        "QPushButton::hover{background-color :#80a7e8;}"
-                                        "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnSecuencial.setGeometry(180, 250, 300, 30)
+        self.bnSecuencial.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnSecuencial.clicked.connect(self.secuencial)
         self.bnSecuencial.setEnabled(False)
         
         self.bnBinaria = QtW.QPushButton("Binaria", self)
-        self.bnBinaria.setGeometry(560, 60, 170, 30)
-        self.bnBinaria.setStyleSheet("QPushButton{background-color:#46D9F3; border:1px solid black;}"
-                                        "QPushButton::hover{background-color :#80a7e8;}"
-                                        "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnBinaria.setGeometry(180, 290, 300, 30)
+        self.bnBinaria.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnBinaria.clicked.connect(self.binario)
         self.bnBinaria.setEnabled(False)
         
         self.bnHASH = QtW.QPushButton("Función Hash", self)
-        self.bnHASH.setGeometry(560, 140, 170, 30)
-        self.bnHASH.setStyleSheet("QPushButton{background-color:#46D9F3; border:1px solid black;}"
-                                      "QPushButton::hover{background-color :#80a7e8;}"
-                                      "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnHASH.setGeometry(335, 330, 145, 30)
+        self.bnHASH.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnHASH.clicked.connect(self.funcionesHash)
         self.bnHASH.setEnabled(False)
 
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
-        self.bnReiniciar.setGeometry(420, 600, 170, 30)
-        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#f4c3a5; border:1px solid black;}"
-                                      "QPushButton::hover{background-color :#80a7e8;}"
-                                      "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnReiniciar.setGeometry(20, 640, 500, 30)
+        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#D4C2AD;}"
+                                   "QPushButton::pressed{background-color:#EFDFCC; }")
         self.bnReiniciar.clicked.connect(self.reiniciar)
         self.bnReiniciar.setEnabled(False)
+
+
+    # ---------------------------------------- Métodos ------------------------------------
 
     def testEstructure(self):
         t = 0
@@ -168,19 +158,23 @@ class ExternasView(QtW.QGroupBox):
             if(self.tamanoEstructura.toPlainText() != ''):
                 t = int(self.tamanoEstructura.toPlainText())
             if(t % 10 != 0 or t > 1000 or t <= 0):
-                self.errWarning("Por Favor ingrese un tamaño mayor a 0 o múltiplo de 10")
+                self.imprimirTexto("Por Favor ingrese un tamaño mayor a 0 o múltiplo de 10")
                 return
         except:
-            self.errWarning("Ingreso para tamaño caracteres no numericos")
+            self.imprimirTexto("Ingreso para tamaño caracteres no numericos")
             return
 
         self.rango = t
-        self.processSuccess("Estructura definida")
-        self.errWarning("")
+        self.imprimirTexto("Estructura definida")
         self.crearTabla()
         self.bnEstructura.setEnabled(False)
         self.bnIngresar.setEnabled(True)
         self.bnReiniciar.setEnabled(True)
+
+    def crearTabla(self):
+        for i in range(0, self.rango):
+            self.tabla.insertRow(i)
+            self.tabla.setItem(i, 0, QtW.QTableWidgetItem(str(i + 1)))
 
     def ingresarDato(self):
         d = 0
@@ -188,38 +182,35 @@ class ExternasView(QtW.QGroupBox):
             if(self.ingresoDato.toPlainText() != ''):
                 d = int(self.ingresoDato.toPlainText())
             if(d <= 0):
-                self.errWarning("Por Favor ingrese un registro mayor a 0")
+                self.imprimirTexto("Por Favor ingrese una clave mayor a 0")
                 return
             if(len(self.listaDatos) > self.rango-1):
-                self.errWarning("La estructura ya está llena")
+                self.imprimirTexto("La estructura ya está llena")
+                return
+            if d not in self.listaDatos:
+                self.listaDatos.append(d)
+                self.cargarDatos()
+                self.cargarDatosSecuencialesBinarios()
+                self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
+            else:
+                self.imprimirTexto("La clave ya se encuentra en la estructura")
                 return
         except:
-            self.errWarning("Ingreso para registro caracteres no numericos")
+            self.errWarning("La clave no puede tener caracteres no numericos")
             return
-
-        self.listaDatos.append(d)
-        self.listaDatos.sort()
-        self.processSuccess("Dato Ingresado (" + str(d) + ")")
-        self.errWarning("")
-        self.bnTerminar.setEnabled(True)
-        self.cargarDatos()
+        
         self.ingresoDato.setText("")
-    
-    def crearTabla(self):
-        for i in range(0, self.rango):
-            self.tabla.insertRow(i)
-            self.tabla.setItem(i, 0, QtW.QTableWidgetItem(str(i + 1)))
 
-    def errWarning(self, mensaje):
-        self.labelWarning.setText("Error: " + mensaje)
 
-    def processSuccess(self, mensaje):
-        self.labelSuccess.setText("Success: " + mensaje)
+    def cargarDatos(self):
+        tablerow = 0
+        for i in self.listaDatos:
+            self.tabla.setItem(tablerow, 1, QtW.QTableWidgetItem(str(i)))
+            tablerow += 1
 
     def reiniciar(self):
         self.rango = None
         self.listaDatos = []
-        self.tabla.setRowCount(0)
         self.bnEstructura.setEnabled(True)
         self.opcionMetodoHash.setEnabled(True)
         self.tamanoEstructura.setEnabled(True)
@@ -230,21 +221,6 @@ class ExternasView(QtW.QGroupBox):
         self.bnHASH.setEnabled(False)
         self.bnIngresar.setEnabled(False)
         self.registroProcess.setText("")
-
-    def terminar(self):
-        self.bnTerminar.setEnabled(False)
-        self.bnSecuencial.setEnabled(True)
-        self.bnBinaria.setEnabled(True)
-        self.bnHASH.setEnabled(True)
-        self.bnIngresar.setEnabled(False)
-        self.registroProcess.setText("")
-        self.ingresoDato.setText("")
-
-    def cargarDatos(self):
-        tablerow = 0
-        for i in self.listaDatos:
-            self.tabla.setItem(tablerow, 1, QtW.QTableWidgetItem(str(i)))
-            tablerow += 1
 
     def secuencial(self):
         r = 0
@@ -326,4 +302,7 @@ class ExternasView(QtW.QGroupBox):
         tablerow = 0
         for i in self.hash.estructura:
             self.tablaBloques.setItem(tablerow, i-1, QtW.QTableWidgetItem(str(self.hash.estructura[i])))
+
+    def imprimirTexto(self,texto:str):
+        self.registroProcess.setText(self.registroProcess.toPlainText()+"\n >"+texto)
 

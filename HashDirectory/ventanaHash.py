@@ -14,7 +14,7 @@ class HashView(QtW.QGroupBox):
 
         self.hash = None
 
-        self.setStyleSheet("background-color:white")
+        self.setStyleSheet("background-color:#DECCA6")
 
         self.tabla = QtW.QTableWidget(self)
         self.tabla.setColumnCount(2)
@@ -24,6 +24,7 @@ class HashView(QtW.QGroupBox):
         self.tabla.setColumnWidth(0, 135)
         self.tabla.setColumnWidth(1, 135)
         self.tabla.verticalHeader().setVisible(False)
+        self.tabla.setStyleSheet("QTableWidget{border:1px solid black; background-color:#EBE6D2}")
 
         # seccion de entradas
         label = QtW.QLabel("Metodo hash", self)
@@ -34,6 +35,7 @@ class HashView(QtW.QGroupBox):
         self.opcionMetodoHash.move(10, 40)
         self.opcionMetodoHash.resize(150, 30)
         self.opcionMetodoHash.setFont(QFont("Arial", 10, QFont.Bold))
+        self.opcionMetodoHash.setStyleSheet("background-color:#EBE6D2")
 
         label = QtW.QLabel("Metodo Solucion de Colisiones", self)
         label.move(190, 10)
@@ -43,6 +45,7 @@ class HashView(QtW.QGroupBox):
         self.opcionSolColision.move(190, 40)
         self.opcionSolColision.resize(150, 30)
         self.opcionSolColision.setFont(QFont("Arial", 10, QFont.Bold))
+        self.opcionSolColision.setStyleSheet("background-color:#EBE6D2")
 
         label = QtW.QLabel("Tamaño Estructura", self)
         label.move(400, 10)
@@ -52,6 +55,7 @@ class HashView(QtW.QGroupBox):
         self.tamanoEstructura.move(400, 40)
         self.tamanoEstructura.resize(140, 30)
         self.tamanoEstructura.setFont(QFont("Arial", 10))
+        self.tamanoEstructura.setStyleSheet("background-color:#EBE6D2")
 
         label = QtW.QLabel("Ingresar Registro (Solo se admiten registro numericos)", self)
         label.move(10, 100)
@@ -61,6 +65,7 @@ class HashView(QtW.QGroupBox):
         self.ingresoDato.move(10, 140)
         self.ingresoDato.resize(200, 30)
         self.ingresoDato.setFont(QFont("Arial", 10))
+        self.ingresoDato.setStyleSheet("background-color:#EBE6D2")
 
         self.labelWarning = QtW.QLabel("Error: ", self)
         self.labelWarning.move(10, 300)
@@ -80,28 +85,29 @@ class HashView(QtW.QGroupBox):
         self.registroProcess.resize(750, 300)
         self.registroProcess.setReadOnly(True)
         self.registroProcess.setFont(QFont("Arial", 10))
+        self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
-        self.bnEstructura = QtW.QPushButton("Definir Estructura", self)
+        self.bnEstructura = QtW.QPushButton("Crear Estructura", self)
         self.bnEstructura.setGeometry(570, 40, 170, 30)
-        self.bnEstructura.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
-                                        "QPushButton::hover{background-color :#80a7e8;}"
-                                        "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnEstructura.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnEstructura.setFont(QFont("Arial", 10))
         self.bnEstructura.clicked.connect(self.testEstructure)
 
         self.bnIngresar = QtW.QPushButton("Agregar", self)
         self.bnIngresar.setGeometry(220, 140, 170, 30)
-        self.bnIngresar.setStyleSheet("QPushButton{background-color:#a4c3a5; border:1px solid black;}"
-                                      "QPushButton::hover{background-color :#80a7e8;}"
-                                      "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnIngresar.setFont(QFont("Arial", 10))
         self.bnIngresar.clicked.connect(self.ingresarDato)
 
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
         self.bnReiniciar.setGeometry(570, 140, 170, 30)
-        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#f4c3a5; border:1px solid black;}"
-                                      "QPushButton::hover{background-color :#80a7e8;}"
-                                      "QPushButton::pressed{background-color:#7499d6; }")
+        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#D4C2AD;}"
+                                   "QPushButton::pressed{background-color:#EFDFCC; }")
         self.bnReiniciar.setFont(QFont("Arial", 10))
         self.bnReiniciar.clicked.connect(self.reiniciar)
         self.bnReiniciar.setEnabled(False)

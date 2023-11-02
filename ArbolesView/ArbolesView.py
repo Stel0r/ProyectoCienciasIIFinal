@@ -18,8 +18,9 @@ class ArbolesView(QGroupBox):
         self.canvasArea = QScrollArea(self)
         self.canvasArea.setGeometry(40,20,802,652)
         self.canvasArea.setWidget(self.canvas)
+        self.canvasArea.setStyleSheet("background-color:#EBE6D2")
 
-        self.setStyleSheet("background-color:white")
+        self.setStyleSheet("background-color:#DECCA6")
 
         self.tabla = QTableWidget(self)
         self.tabla.setColumnCount(2)
@@ -30,40 +31,47 @@ class ArbolesView(QGroupBox):
         self.tabla.setColumnWidth(1,100)
         self.tabla.setFont(QFont("Arial",7))
         self.tabla.horizontalScrollBar().setVisible(False)
+        self.tabla.setStyleSheet("QTableWidget{border:1px solid black; background-color:#D0C0A7}")
 
         panelOpciones = QGroupBox(self)
         panelOpciones.setGeometry(860,345,200,330)
-        panelOpciones.setStyleSheet("QGroupBox{border:1px solid black}")
+        panelOpciones.setStyleSheet("QGroupBox{border:1px solid black; background-color:#D0C0A7}")
 
-        label = QLabel("Palabra",panelOpciones)
+        label = QLabel("Clave",panelOpciones)
         label.move(80,30)
         label.setFont(QFont("Arial",10))
+        label.setStyleSheet("background-color:#D0C0A7")
         self.campoPalabra = QTextEdit(panelOpciones)
         self.campoPalabra.setGeometry(30,50,140,30)
         self.campoPalabra.setFont(QFont("Arial",10))
+        self.campoPalabra.setStyleSheet("background-color:#EBE6D2")
         self.campoPalabra.setFrameStyle(1)
         
         label = QLabel("Tipo Arbol",panelOpciones)
         label.move(70,100)
         label.setFont(QFont("Arial",10))
+        label.setStyleSheet("background-color:#D0C0A7")
         self.opcionTipoArbol = QComboBox(panelOpciones)
         self.opcionTipoArbol.setGeometry(30,130,140,30)
         self.opcionTipoArbol.setFont(QFont("Arial",10))
+        self.opcionTipoArbol.setStyleSheet("background-color:#EBE6D2")
         self.opcionTipoArbol.addItems(["Digital","Residuos (TRIES)"])
 
-        label = QLabel("paso",panelOpciones)
+        label = QLabel("Paso",panelOpciones)
         label.move(35,235)
         label.setFont(QFont("Arial",10))
+        label.setStyleSheet("background-color:#D0C0A7")
         self.opcionPasos = QComboBox(panelOpciones)
         self.opcionPasos.setGeometry(70,230,100,30)
         self.opcionPasos.setFont(QFont("Arial",10))
+        self.opcionPasos.setStyleSheet("background-color:#EBE6D2")
         self.opcionPasos.currentIndexChanged.connect(self.actualizarCanvas)
 
         botonGenerar = QPushButton("Generar",panelOpciones)
         botonGenerar.setGeometry(30,270,140,30)
-        botonGenerar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
-                                   "QPushButton::hover{background-color :#80a7e8;}"
-                                   "QPushButton::pressed{background-color:#7499d6; }")
+        botonGenerar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#D4C2AD;}"
+                                   "QPushButton::pressed{background-color:#EFDFCC; }")
         botonGenerar.clicked.connect(self.generarArbol)
         
     def actualizarCanvas(self):

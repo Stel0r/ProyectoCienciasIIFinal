@@ -13,12 +13,15 @@ class BusquedasInView(QGroupBox):
         #variables logicas
         self.estructura:EstructuraInterna = None
 
+        self.setStyleSheet("background-color:#DECCA6")
+
         self.tabla = QTableWidget(self)
         self.tabla.setColumnCount(1)
         self.tabla.setHorizontalHeaderLabels(["Valor"])
         self.tabla.setGeometry(880, 20, 170, 650)
         self.tabla.horizontalScrollBar().setVisible(False)
         self.tabla.setColumnWidth(0, 140)
+        self.tabla.setStyleSheet("QTableWidget{border:1px solid black; background-color:#EBE6D2}")
 
         panelEstructura = QGroupBox(self)
         panelEstructura.setGeometry(10,20,860,320)
@@ -37,6 +40,7 @@ class BusquedasInView(QGroupBox):
         self.opcionTipoBusq.resize(120,30)
         self.opcionTipoBusq.setFont(QFont("Arial",9,QFont.Bold))
         self.opcionTipoBusq.currentTextChanged.connect(self.deshabilitar)
+        self.opcionTipoBusq.setStyleSheet("background-color:#EBE6D2")
 
         label = QLabel("Rango",self)
         label.move(445,125)
@@ -46,12 +50,13 @@ class BusquedasInView(QGroupBox):
         self.campoRango.move(490,120)
         self.campoRango.resize(80,30)
         self.campoRango.setFont(QFont("Arial",9))
+        self.campoRango.setStyleSheet("background-color:#EBE6D2")
 
         botonGenerar = QPushButton("Generar",panelEstructura)
         botonGenerar.setGeometry(590,100,120,30)
-        botonGenerar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
-                                   "QPushButton::hover{background-color :#80a7e8;}"
-                                   "QPushButton::pressed{background-color:#7499d6; }")
+        botonGenerar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         botonGenerar.setCursor(QCursor(Qt.PointingHandCursor))
         botonGenerar.clicked.connect(self.GenerarEstructura)
         
@@ -69,12 +74,13 @@ class BusquedasInView(QGroupBox):
         self.campoCampResNum.resize(80,30)
         self.campoCampResNum.setFont(QFont("Arial",9))
         self.campoCampResNum.setVisible(False)
+        self.campoCampResNum.setStyleSheet("background-color:#EBE6D2")
 
         self.botonIngresar = QPushButton("Ingresar",panelEstructura)
         self.botonIngresar.setGeometry(420,200,120,30)
-        self.botonIngresar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
-                                   "QPushButton::hover{background-color :#80a7e8;}"
-                                   "QPushButton::pressed{background-color:#7499d6; }")
+        self.botonIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.botonIngresar.setCursor(QCursor(Qt.PointingHandCursor))
         self.botonIngresar.clicked.connect(self.ingresarDato)
         self.botonIngresar.setVisible(False)
@@ -82,9 +88,9 @@ class BusquedasInView(QGroupBox):
         
         self.botonBuscar = QPushButton("Buscar",panelEstructura)
         self.botonBuscar.setGeometry(560,200,120,30)
-        self.botonBuscar.setStyleSheet("QPushButton{background-color:#a4c3f5; border:1px solid black;}"
-                                   "QPushButton::hover{background-color :#80a7e8;}"
-                                   "QPushButton::pressed{background-color:#7499d6; }")
+        self.botonBuscar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.botonBuscar.setCursor(QCursor(Qt.PointingHandCursor))
         self.botonBuscar.clicked.connect(self.buscarDato)
         self.botonBuscar.setVisible(False)
@@ -96,6 +102,7 @@ class BusquedasInView(QGroupBox):
         self.registroProcess.setGeometry(10, 350,860, 320)
         self.registroProcess.setReadOnly(True)
         self.registroProcess.setFont(QFont("Arial", 12))
+        self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
         
     def GenerarEstructura(self):
