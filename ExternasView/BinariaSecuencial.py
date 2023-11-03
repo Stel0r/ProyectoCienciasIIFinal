@@ -20,18 +20,19 @@ class Binario:
 
     def busqueda(self):
         tamaño = len(self.matriz)
+        mat = self.matriz
         while True:
             central = round(tamaño / 2) - 1
-            if self.valor == self.matriz[central]:
+            if self.valor == mat[central]:
                 return f"El registro {self.valor} se encontró en el bloque {self.numeroBloque} en la posición {self.matriz.index(self.valor)+1}"
-            elif self.valor < self.matriz[central] and not tamaño <= 1:
-                self.matriz = self.matriz[:central]
-            elif self.valor > self.matriz[central] and not tamaño <= 1:
-                self.matriz = self.matriz[central + 1:]
+            elif self.valor < mat[central] and not tamaño <= 1:
+                mat = mat[:central]
+            elif self.valor > mat[central] and not tamaño <= 1:
+                mat = mat[central + 1:]
             elif tamaño <= 1:
                 return f"El registro {self.valor} no se encontró"
 
-            tamaño = len(self.matriz)  
+            tamaño = len(mat)  
 
 import math
 
