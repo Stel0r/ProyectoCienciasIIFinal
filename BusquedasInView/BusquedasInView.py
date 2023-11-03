@@ -12,6 +12,7 @@ class BusquedasInView(QGroupBox):
 
         #variables logicas
         self.estructura:EstructuraInterna = None
+        self.datoBuscado : int = None
 
         self.setStyleSheet("background-color:#DECCA6")
 
@@ -32,28 +33,38 @@ class BusquedasInView(QGroupBox):
 
         #seccion de entradas
         label = QLabel("Tipo de Busqueda",self)
-        label.move(185,125)
+        label.move(105,125)
         label.setFont(QFont("Arial",9,QFont.Bold))
         self.opcionTipoBusq = QComboBox(self)
         self.opcionTipoBusq.addItems(["Secuencial","Binaria"])
-        self.opcionTipoBusq.move(300,120)
+        self.opcionTipoBusq.move(220,120)
         self.opcionTipoBusq.resize(120,30)
         self.opcionTipoBusq.setFont(QFont("Arial",9,QFont.Bold))
         self.opcionTipoBusq.currentTextChanged.connect(self.deshabilitar)
         self.opcionTipoBusq.setStyleSheet("background-color:#EBE6D2")
 
         label = QLabel("Rango",self)
-        label.move(445,125)
+        label.move(345,125)
         label.setFont(QFont("Arial",9,QFont.Bold))
         self.campoRango = QTextEdit(self)
         self.campoRango.setFrameStyle(1)
-        self.campoRango.move(490,120)
+        self.campoRango.move(390,120)
         self.campoRango.resize(80,30)
         self.campoRango.setFont(QFont("Arial",9))
         self.campoRango.setStyleSheet("background-color:#EBE6D2")
 
+        label = QLabel("Digitos Clave",self)
+        label.move(475,125)
+        label.setFont(QFont("Arial",9,QFont.Bold))
+        self.campoDigitos = QTextEdit(self)
+        self.campoDigitos.setFrameStyle(1)
+        self.campoDigitos.move(550,120)
+        self.campoDigitos.resize(80,30)
+        self.campoDigitos.setFont(QFont("Arial",9))
+        self.campoDigitos.setStyleSheet("background-color:#EBE6D2")
+
         botonGenerar = QPushButton("Generar",panelEstructura)
-        botonGenerar.setGeometry(590,100,120,30)
+        botonGenerar.setGeometry(640,100,120,30)
         botonGenerar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -64,7 +75,7 @@ class BusquedasInView(QGroupBox):
         self.labelTitIng.move(120,160)
         self.labelTitIng.setVisible(False)
         
-        self.labelCampResNum = QLabel("Registro Numerico",panelEstructura)
+        self.labelCampResNum = QLabel("Clave Numerica",panelEstructura)
         self.labelCampResNum.move(200,205)
         self.labelCampResNum.setFont(QFont("Arial",9,QFont.Bold))
         self.labelCampResNum.setVisible(False)
@@ -107,10 +118,15 @@ class BusquedasInView(QGroupBox):
         
     def GenerarEstructura(self):
         try:
+            if self.estructura != None:
+                matriz = self.estructura.matriz
+            else:
+                matriz = []
             if(self.opcionTipoBusq.currentText() == "Secuencial"):
-                self.estructura = Secuencial([],int(self.campoRango.toPlainText()))
+                self.estructura = Secuencial(matriz,int(self.campoRango.toPlainText()),int(self.campoDigitos.toPlainText()))
             elif(self.opcionTipoBusq.currentText() == "Binaria"):
-                self.estructura = Binario([],int(self.campoRango.toPlainText()))
+                self.estructura = Binario(matriz,int(self.campoRango.toPlainText()),int(self.campoDigitos.toPlainText()))
+            self.tabla.setRowCount(0)
             for x in range(int(self.campoRango.toPlainText())):
                 self.tabla.insertRow(x)
             self.labelTitIng.setVisible(True)
@@ -119,20 +135,18 @@ class BusquedasInView(QGroupBox):
             self.botonIngresar.setVisible(True)
             self.botonBuscar.setVisible(True)
             self.imprimirTexto("Se ha creado la estructura exitosamente")
+            self.refrescarTabla()
         except Exception as e:
             error = QMessageBox()
-            error.setText("El rango no es valido, ")
+            error.setText("Los datos no son validos, deben ser Numericos")
             error.setIcon(QMessageBox.Icon.Critical)
             print(e)
             error.exec()
 
     def deshabilitar(self):
         self.tabla.setRowCount(0)
-        self.labelTitIng.setVisible(False)
-        self.labelCampResNum.setVisible(False)
-        self.campoCampResNum.setVisible(False)
-        self.botonIngresar.setVisible(False)
-        self.botonBuscar.setVisible(False)
+        self.GenerarEstructura()
+        self.refrescarTabla()
 
     def imprimirTexto(self,texto:str):
         self.registroProcess.setText(self.registroProcess.toPlainText()+"\n >"+texto)
@@ -144,7 +158,7 @@ class BusquedasInView(QGroupBox):
             self.refrescarTabla()
         except Exception as e:
             error = QMessageBox()
-            error.setText("El Registro debe ser Numerico")
+            error.setText("La clave debe ser Numerica")
             error.setIcon(QMessageBox.Icon.Critical)
             print(e)
             error.exec()
@@ -154,14 +168,20 @@ class BusquedasInView(QGroupBox):
         try:
             res = self.estructura.busqueda(int(self.campoCampResNum.toPlainText()))
             self.imprimirTexto(res)
+            self.datoBuscado = int(self.campoCampResNum.toPlainText())
             self.refrescarTabla()
         except Exception as e:
             error = QMessageBox()
-            error.setText("El Registro debe ser Numerico")
+            error.setText("la clave debe ser Numerico")
             error.setIcon(QMessageBox.Icon.Critical)
             print(e)
             error.exec()
     
     def refrescarTabla(self):
         for i in range(len(self.estructura.matriz)):
-            self.tabla.setItem(i,0,QTableWidgetItem(str(self.estructura.matriz[i])))
+            itemTabla = QTableWidgetItem(("0"*(self.estructura.digitos - len(str(self.estructura.matriz[i]))))+str(self.estructura.matriz[i]))
+            if (self.estructura.matriz[i] == self.datoBuscado):
+                print("cambiando color")
+                itemTabla.setBackground(QColorConstants.Green)
+            self.tabla.setItem(i,0,itemTabla)
+        self.datoBuscado = None
