@@ -88,7 +88,7 @@ class ExternasView(QtW.QGroupBox):
         self.registroProcess.setFont(QFont("Arial", 10))
         self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
-        label = QtW.QLabel("Dirección a buscar:", self)
+        label = QtW.QLabel("Clave a buscar:", self)
         label.move(20, 290)
         label.setFont(QFont("Arial", 10, QFont.Bold))
         self.txbuscar = QtW.QTextEdit(self)

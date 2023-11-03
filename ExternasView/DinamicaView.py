@@ -240,7 +240,6 @@ class DinamicaView(QtW.QGroupBox):
         tablerow = 0
         for i in self.estructura.ListClaves:
             self.tabla.setItem(tablerow, 1, QtW.QTableWidgetItem(str(i)))
-            print(i)
             if i in self.estructura.ListEspera:
                 self.tabla.setItem(tablerow, 0, QtW.QTableWidgetItem("Esperando"))
             tablerow += 1

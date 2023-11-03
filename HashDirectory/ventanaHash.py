@@ -79,6 +79,24 @@ class HashView(QtW.QGroupBox):
         self.labelSuccess.resize(750, 30)
         self.labelSuccess.setStyleSheet("color:green")
 
+        label = QtW.QLabel("Clave a buscar:", self)
+        label.move(10, 200)
+        label.setFont(QFont("Arial", 10, QFont.Bold))
+        self.txbuscar = QtW.QTextEdit(self)
+        self.txbuscar.setFrameStyle(1)
+        self.txbuscar.move(10, 240)
+        self.txbuscar.resize(140, 30)
+        self.txbuscar.setFont(QFont("Arial", 10))
+        self.txbuscar.setStyleSheet("background-color:#EBE6D2")
+
+        self.bnBuscar = QtW.QPushButton("Buscar", self)
+        self.bnBuscar.setGeometry(180, 240, 130, 30)
+        self.bnBuscar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
+        self.bnBuscar.clicked.connect(self.buscar)
+        self.bnBuscar.setEnabled(True)
+
         self.registroProcess = QtW.QTextEdit(self)
         self.registroProcess.setFrameStyle(1)
         self.registroProcess.move(10, 370)
@@ -189,3 +207,14 @@ class HashView(QtW.QGroupBox):
             self.registroProcess.setText(self.registroProcess.toPlainText() + "\n> " + self.hash.mColision)
         if self.hash.mSolColision != "":
             self.registroProcess.setText(self.registroProcess.toPlainText() + "\n> " + self.hash.mSolColision)
+
+    def buscar(self):
+        r = 0
+        try:
+            if(self.txbuscar.toPlainText() != ''):
+                r = int(self.txbuscar.toPlainText())
+        except:
+            self.imprimirTexto("Ingreso para registro caracteres no numericos")
+            return
+
+        self.registroProcess.setText(self.hash.buscarElemento(r))

@@ -134,10 +134,8 @@ class TransfClaves():
     print("la clave de "+str(elemento)+" es "+str(clave))
     if(clave in self.estructura):
       if(self.estructura.get(clave) == elemento):
-        print(str(elemento)+" se encuentra en la estructura con la clave "+str(clave))
+        return "La clave " + str(elemento)+" se encuentra en la estructura con la clave "+str(clave)
       else:
-        print("\033[0;31m"+str(elemento)+" No esta en la estructura. La clave " +
-              str(clave)+" contiene a "+str(self.estructura.get(clave))+"\033[0;37m")    
+        return "\033" +str(elemento)+" No esta en la estructura. La clave " + str(clave)+" contiene a "+str(self.estructura.get(clave))+"\033"  
     else:
-      print("\033[0;31m"+"La estructura No contiene la clave " +
-              str(clave)+"\033[0;37m")    
+      return "\033"+"La estructura No contiene la clave " + str(clave)+"\033"

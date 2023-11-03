@@ -39,7 +39,6 @@ class Dinamicas:
           self.ListClaves.append(Clave)
       self.inicializateTable()
       self.ListEspera = list(self.ListClaves)
-      print(self.ListEspera)
       for key in self.ListClaves:
           index = calculos.hash_mod(key,len(self.StructureDinamic[0]))
           for row in self.StructureDinamic:
@@ -54,7 +53,6 @@ class Dinamicas:
     
           if not self.event:
             self.historico = self.StructureDinamic
-      print(self.ListEspera)
       if calculos.densidad_ocupacinal_expasion(self.StructureDinamic, len(self.ListClaves), self.porExpasion):
               self.event = True
               if self.Tipo == "Total":
