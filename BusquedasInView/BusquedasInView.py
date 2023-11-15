@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5 import QtWidgets as QtW
 from BusquedasInView.Estructuras.Binario import Binario
 
 from BusquedasInView.Estructuras.EstructuraInterna import EstructuraInterna
@@ -19,53 +18,56 @@ class BusquedasInView(QGroupBox):
 
         self.tabla = QTableWidget(self)
         self.tabla.setColumnCount(1)
-        self.tabla.setHorizontalHeaderLabels(["Valor"])
-        self.tabla.setGeometry(880, 20, 170, 650)
+        self.tabla.setHorizontalHeaderLabels(["Clave"])
+        self.tabla.setFont(QFont("Arial",12,QFont.Bold))
+        self.tabla.setGeometry(1100, 20, 220, 850)
         self.tabla.horizontalScrollBar().setVisible(False)
-        self.tabla.setColumnWidth(0, 140)
+        self.tabla.setColumnWidth(0, 200)
         self.tabla.setStyleSheet("QTableWidget{border:1px solid black; background-color:#EBE6D2}")
 
         panelEstructura = QGroupBox(self)
-        panelEstructura.setGeometry(10,20,860,320)
+        panelEstructura.setGeometry(10,20,1060,320)
         panelEstructura.setStyleSheet("QGroupBox{border:1px solid black}")
 
         label = QLabel("Creacion Estructura",panelEstructura)
+        label.setFont(QFont("Arial",12,QFont.Bold))
         label.move(120,60)
 
         #seccion de entradas
         label = QLabel("Tipo de Busqueda",self)
-        label.move(105,125)
-        label.setFont(QFont("Arial",9,QFont.Bold))
+        label.move(80,125)
+        label.setFont(QFont("Arial",12,QFont.Bold))
         self.opcionTipoBusq = QComboBox(self)
         self.opcionTipoBusq.addItems(["Secuencial","Binaria"])
-        self.opcionTipoBusq.move(220,120)
+        self.opcionTipoBusq.move(235,120)
         self.opcionTipoBusq.resize(120,30)
-        self.opcionTipoBusq.setFont(QFont("Arial",9,QFont.Bold))
+        self.opcionTipoBusq.setFont(QFont("Arial",12,QFont.Bold))
         self.opcionTipoBusq.currentTextChanged.connect(self.deshabilitar)
         self.opcionTipoBusq.setStyleSheet("background-color:#EBE6D2")
 
         label = QLabel("Rango",self)
-        label.move(345,125)
-        label.setFont(QFont("Arial",9,QFont.Bold))
+        label.move(385,125)
+        label.setFont(QFont("Arial",12,QFont.Bold))
         self.campoRango = QTextEdit(self)
         self.campoRango.setFrameStyle(1)
-        self.campoRango.move(390,120)
+        self.campoRango.move(450,120)
         self.campoRango.resize(80,30)
-        self.campoRango.setFont(QFont("Arial",9))
+        self.campoRango.setFont(QFont("Arial",12))
         self.campoRango.setStyleSheet("background-color:#EBE6D2")
 
         label = QLabel("Digitos Clave",self)
-        label.move(475,125)
-        label.setFont(QFont("Arial",9,QFont.Bold))
+        label.move(555,125)
+        label.setFont(QFont("Arial",12,QFont.Bold))
         self.campoDigitos = QTextEdit(self)
         self.campoDigitos.setFrameStyle(1)
-        self.campoDigitos.move(550,120)
+        self.campoDigitos.move(665,120)
         self.campoDigitos.resize(80,30)
-        self.campoDigitos.setFont(QFont("Arial",9))
+        self.campoDigitos.setFont(QFont("Arial",12))
         self.campoDigitos.setStyleSheet("background-color:#EBE6D2")
 
         botonGenerar = QPushButton("Generar",panelEstructura)
-        botonGenerar.setGeometry(640,100,120,30)
+        botonGenerar.setGeometry(780,100,120,30)
+        botonGenerar.setFont(QFont("Arial",12))
         botonGenerar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -74,36 +76,39 @@ class BusquedasInView(QGroupBox):
         
         self.labelTitIng = QLabel("Ingresar/Buscar",panelEstructura)
         self.labelTitIng.move(120,160)
+        self.labelTitIng.setFont(QFont("Arial",12,QFont.Bold))
         self.labelTitIng.setVisible(False)
         
         self.labelCampResNum = QLabel("Clave Numerica",panelEstructura)
         self.labelCampResNum.move(200,205)
-        self.labelCampResNum.setFont(QFont("Arial",9,QFont.Bold))
+        self.labelCampResNum.setFont(QFont("Arial",12,QFont.Bold))
         self.labelCampResNum.setVisible(False)
         self.campoCampResNum = QTextEdit(self)
         self.campoCampResNum.setFrameStyle(1)
-        self.campoCampResNum.move(320,220)
+        self.campoCampResNum.move(350,220)
         self.campoCampResNum.resize(80,30)
-        self.campoCampResNum.setFont(QFont("Arial",9))
+        self.campoCampResNum.setFont(QFont("Arial",12))
         self.campoCampResNum.setVisible(False)
         self.campoCampResNum.setStyleSheet("background-color:#EBE6D2")
 
         self.botonIngresar = QPushButton("Ingresar",panelEstructura)
-        self.botonIngresar.setGeometry(420,200,120,30)
+        self.botonIngresar.setGeometry(480,200,120,30)
         self.botonIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
         self.botonIngresar.setCursor(QCursor(Qt.PointingHandCursor))
         self.botonIngresar.clicked.connect(self.ingresarDato)
+        self.botonIngresar.setFont(QFont("Arial",12))
         self.botonIngresar.setVisible(False)
         
         
         self.botonBuscar = QPushButton("Buscar",panelEstructura)
-        self.botonBuscar.setGeometry(560,200,120,30)
+        self.botonBuscar.setGeometry(610,200,120,30)
         self.botonBuscar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
         self.botonBuscar.setCursor(QCursor(Qt.PointingHandCursor))
+        self.botonBuscar.setFont(QFont("Arial",12))
         self.botonBuscar.clicked.connect(self.buscarDato)
         self.botonBuscar.setVisible(False)
 
@@ -111,9 +116,9 @@ class BusquedasInView(QGroupBox):
 
         self.registroProcess = QTextEdit(self)
         self.registroProcess.setFrameStyle(1)
-        self.registroProcess.setGeometry(10, 350,860, 320)
+        self.registroProcess.setGeometry(10, 350,1060, 520)
         self.registroProcess.setReadOnly(True)
-        self.registroProcess.setFont(QFont("Arial", 12))
+        self.registroProcess.setFont(QFont("Arial", 16))
         self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
         

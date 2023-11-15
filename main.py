@@ -13,8 +13,8 @@ from HashDirectory.ventanaHash import HashView
 def window():
     app = QApplication(sys.argv)
     w = QtW.QMainWindow()
-    w.setGeometry(100, 100, 1080, 720)
-    w.setFixedSize(1080, 720)
+    w.setGeometry(0, 0, 1350, 913)
+    w.setFixedSize(1350, 913)
 
     panelOpciones = IndicesView(None)
     panelHash = HashView(None)
@@ -24,7 +24,7 @@ def window():
     panelDinamica = DinamicaView(None)
 
     ventanaTabs = QtW.QTabWidget(w)
-    ventanaTabs.setGeometry(0, 0, 1080, 730)
+    ventanaTabs.setGeometry(0, 0, 1350, 913)
     ventanaTabs.addTab(panelBusqIn, "Busq. Interna")
     ventanaTabs.addTab(panelHash, "Hash")
     ventanaTabs.addTab(panelArboles, "Arboles")
