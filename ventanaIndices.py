@@ -21,7 +21,7 @@ class IndicesView(QtW.QGroupBox):
         self.ventanaCanvas.verticalScrollBar().setEnabled(False)
         self.ventanaCanvas.horizontalScrollBar().setVisible(True)
         self.ventanaCanvas.horizontalScrollBar().setEnabled(True)
-        self.ventanaCanvas.setStyleSheet("background-color:white")
+        self.ventanaCanvas.setStyleSheet("background-color:#EBE6D2")
         self.ventanaCanvas.setFrameStyle(1)
 
         self.panel = QtW.QWidget(None)
@@ -39,7 +39,7 @@ class IndicesView(QtW.QGroupBox):
             label = QtW.QLabel("", self.panel)
             label.move(self.x + (i * 200) + s, self.y - 40)
             label.resize(self.w, 15)
-            label.setFont(QFont("Times", 13, QFont.Bold))
+            label.setFont(QFont("Arial", 12, QFont.Bold))
             label.setVisible(False)
 
             self.ListaTitulos.append(label)
@@ -50,125 +50,121 @@ class IndicesView(QtW.QGroupBox):
             Structura.setColumnCount(2)
 
             header_item = QtW.QTableWidgetItem("Dir")
-            header_item.setFont(QFont("Times", 13, QFont.Bold))
+            header_item.setFont(QFont("Arial", 12, QFont.Bold))
             Structura.setHorizontalHeaderItem(0,header_item)
             Structura.setColumnWidth(0, 50)
 
             header_item = QtW.QTableWidgetItem("Clave")
-            header_item.setFont(QFont("Times", 13, QFont.Bold))
+            header_item.setFont(QFont("Arial", 12, QFont.Bold))
             Structura.setHorizontalHeaderItem(1,header_item)
             Structura.setColumnWidth(1, 144)
 
-            Structura.horizontalHeader().setStyleSheet("border: 2px solid black")
-            Structura.verticalHeader().setStyleSheet("border: 2px solid black")
-            Structura.setStyleSheet("background-color:white; border: 2px solid black")
+            Structura.setStyleSheet("background-color:#DECCA6")
             Structura.verticalHeader().setVisible(False)
-            Structura.setFont(QFont("Times", 10))
+            Structura.setFont(QFont("Arial", 10))
 
             Structura.setVisible(False)
 
             self.ListaEstructuras.append(Structura)
 
-        self.setStyleSheet("background-color:#CBF5E3; "+
-                           "border: 3px solid black;" +
-                           "border-top-left-radius: 5px;" +
-                           "border-top-right-radius: 5px;" +
-                           "border-bottom-left-radius: 5px;" +
-                           "border-bottom-right-radius: 5px;")
+        self.setStyleSheet("background-color:#DECCA6")
         
         # Registro Procesos
         # Tipo de indice
         label = QtW.QLabel("Tipo de Indice: ", self)
         label.move(11, 40)
-        label.setFont(QFont("Times", 13, QFont.Bold))
-        label.setStyleSheet("border: 0px solid white")
+        label.setFont(QFont("Arial", 12, QFont.Bold))
         self.opcionIndice = QtW.QComboBox(self)
         self.opcionIndice.addItems(["Primario", "Secundario"])
         self.opcionIndice.move(280, 40)
         self.opcionIndice.resize(150, 30)
-        self.opcionIndice.setFont(QFont("Times", 13, QFont.Bold))
+        self.opcionIndice.setFont(QFont("Arial", 12, QFont.Bold))
+        self.opcionIndice.setStyleSheet("background-color:#EBE6D2")
         # Niveles 
         label = QtW.QLabel("Niveles Estructura:", self)
         label.move(11, 100)
-        label.setFont(QFont("Times", 13, QFont.Bold))
+        label.setFont(QFont("Arial", 12, QFont.Bold))
         label.setStyleSheet("border: 0px solid white")
         self.opcionNivel = QtW.QComboBox(self)
         self.opcionNivel.addItems(["Un Nivel", "Multinivel"])
         self.opcionNivel.move(280, 100)
         self.opcionNivel.resize(150, 30)
-        self.opcionNivel.setFont(QFont("Times", 13, QFont.Bold))
+        self.opcionNivel.setFont(QFont("Arial", 12, QFont.Bold))
+        self.opcionNivel.setStyleSheet("background-color:#EBE6D2")
         # Tamaño de Bloque 
         label = QtW.QLabel("Tamaño de Bloque:", self)
         label.move(11, 160)
-        label.setFont(QFont("Times", 13, QFont.Bold))
+        label.setFont(QFont("Arial", 12, QFont.Bold))
         label.setStyleSheet("border: 0px solid white")
         self.sizeBloque = QtW.QTextEdit(self)
         self.sizeBloque.setFrameStyle(1)
         self.sizeBloque.move(280, 160)
         self.sizeBloque.resize(150, 30)
-        self.sizeBloque.setFont(QFont("Times", 13))
+        self.sizeBloque.setFont(QFont("Arial", 12))
+        self.sizeBloque.setStyleSheet("background-color:#EBE6D2")
         # Cantidad de Registros
         label = QtW.QLabel("Cantidad de Registros:", self)
         label.move(11, 220)
-        label.setFont(QFont("Times", 13, QFont.Bold))
+        label.setFont(QFont("Arial", 12, QFont.Bold))
         label.setStyleSheet("border: 0px solid white")
         self.countRegistrers = QtW.QTextEdit(self)
         self.countRegistrers.setFrameStyle(1)
         self.countRegistrers.move(280, 220)
         self.countRegistrers.resize(150, 30)
-        self.countRegistrers.setFont(QFont("Times", 13))
+        self.countRegistrers.setFont(QFont("Arial", 12))
+        self.countRegistrers.setStyleSheet("background-color:#EBE6D2")
         # Tamaño de Bloques Registro
         label = QtW.QLabel("Tamaño de Registros:", self)
         label.move(11, 280)
-        label.setFont(QFont("Times", 13, QFont.Bold))
+        label.setFont(QFont("Arial", 12, QFont.Bold))
         label.setStyleSheet("border: 0px solid white")
         self.sizeRegistrer = QtW.QTextEdit(self)
         self.sizeRegistrer.setFrameStyle(1)
         self.sizeRegistrer.move(280, 280)
         self.sizeRegistrer.resize(150, 30)
-        self.sizeRegistrer.setFont(QFont("Times", 13))
+        self.sizeRegistrer.setFont(QFont("Arial", 12))
+        self.sizeRegistrer.setStyleSheet("background-color:#EBE6D2")
         # Tamaño de Registros Indice
         label = QtW.QLabel("Tamaño de Registros Indice:", self)
         label.move(11, 340)
-        label.setFont(QFont("Times", 13, QFont.Bold))
+        label.setFont(QFont("Arial", 12, QFont.Bold))
         label.setStyleSheet("border: 0px solid white")
         self.sizeRegistrerIndex = QtW.QTextEdit(self)
         self.sizeRegistrerIndex.setFrameStyle(1)
         self.sizeRegistrerIndex.move(280, 340)
         self.sizeRegistrerIndex.resize(150, 30)
-        self.sizeRegistrerIndex.setFont(QFont("Times", 13))
+        self.sizeRegistrerIndex.setFont(QFont("Arial", 12))
+        self.sizeRegistrerIndex.setStyleSheet("background-color:#EBE6D2")
         # Boton de Crear
         self.bnCreate = QtW.QPushButton("Crear", self)
         self.bnCreate.setGeometry(124, 380, 170, 30)
-        self.bnCreate.setStyleSheet("QPushButton{background-color:#0097A7; color: white;}"
-                                        "QPushButton::hover{background-color :#006064;}"
-                                        "QPushButton::pressed{background-color:#00838F; }")
-        self.bnCreate.setFont(QFont("Times", 13, QFont.Bold))
+        self.bnCreate.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
         self.bnCreate.clicked.connect(self.verifyCompleteData)
         # Boton reiniciar
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
-        self.bnReiniciar.setGeometry(124, 415, 170, 30)
-        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#0097A7; color: white;}"
-                                        "QPushButton::hover{background-color :#006064;}"
-                                        "QPushButton::pressed{background-color:#00838F; }")
-        self.bnReiniciar.setFont(QFont("Times", 13, QFont.Bold))
+        self.bnReiniciar.setGeometry(10, 650, 420, 30)
+        self.bnReiniciar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
+                                   "QPushButton::hover{background-color :#D4C2AD;}"
+                                   "QPushButton::pressed{background-color:#EFDFCC; }")
         #self.bnReiniciar.clicked.connect(self.verifyCompleteData)
 
         # Consola
         self.consola = QtW.QTextEdit(self)
         self.consola.setFrameStyle(1)
-        self.consola.move(10, 465)
+        self.consola.move(10, 420)
         self.consola.resize(420, 218)
         self.consola.setReadOnly(True)
-        self.consola.setStyleSheet("background-color:#ffffff;")
-        self.consola.setFont(QFont("Times", 12))
+        self.consola.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
+        self.consola.setFont(QFont("Arial", 12))
 
     def warningError(self, msg: str):
         error = QtW.QMessageBox(self)
         error.setIcon(QtW.QMessageBox.Icon.Warning)
         error.setText(msg)
         error.setStyleSheet("background-color:white; border: 0pc solid white")
-        error.setFont(QFont("Times", 13, QFont.Bold))
+        error.setFont(QFont("Arial", 12, QFont.Bold))
         error.exec_()
 
     def registrerConsole(self, msg: str):
