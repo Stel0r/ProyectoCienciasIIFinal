@@ -42,7 +42,6 @@ class BusquedasInView(QGroupBox):
         self.opcionTipoBusq.move(235,120)
         self.opcionTipoBusq.resize(120,30)
         self.opcionTipoBusq.setFont(QFont("Arial",12,QFont.Bold))
-        self.opcionTipoBusq.currentTextChanged.connect(self.deshabilitar)
         self.opcionTipoBusq.setStyleSheet("background-color:#EBE6D2")
 
         label = QLabel("Rango",self)
