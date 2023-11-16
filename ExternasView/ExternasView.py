@@ -136,7 +136,7 @@ class ExternasView(QtW.QGroupBox):
         self.bnmetodo.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
-        self.bnmetodo.clicked.connect(self.busqueda)
+        self.bnmetodo.clicked.connect(self.elegirBusqueda)
         self.bnmetodo.setEnabled(False)
 
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
@@ -148,7 +148,11 @@ class ExternasView(QtW.QGroupBox):
         self.bnReiniciar.setEnabled(False)
 
 
-    # ---------------------------------------- Métodos ------------------------------------
+    # ---------------------------------------- Métodos -----------------------------------------------------
+
+    # Creación de la estructura ----------------------------------------------------------------------------
+
+    # Rango
 
     def testEstructure(self):
         t = 0
@@ -159,7 +163,7 @@ class ExternasView(QtW.QGroupBox):
                 self.imprimirTexto("Por Favor ingrese un tamaño mayor a 0 y menor a 10000, y múltiplo de 10")
                 return
         except:
-            self.imprimirTexto("Ingreso para tamaño caracteres no numericos")
+            self.imprimirTexto("El campo del rango está vacío o se ha ingresado caracteres no numéricos")
             return
 
         self.rango = t
@@ -169,10 +173,21 @@ class ExternasView(QtW.QGroupBox):
         self.bnReiniciar.setEnabled(True)
         self.bnmetodo.setEnabled(True)
 
-    def crearTabla(self):
-        for i in range(0, self.rango):
-            self.tabla.insertRow(i)
-            self.tabla.setItem(i, 0, QtW.QTableWidgetItem(str(i + 1)))
+    # Método de busqueda
+
+    def elegirBusqueda(self):
+        self.metodo = self.opcionMetodoHash.currentText()
+        if self.metodo != "Secuencial" and self.metodo != "Binaria":
+            self.listaDatos.clear()
+            self.tabla.setRowCount(0)
+            self.tablaBloques.setRowCount(0)
+            self.crearTabla()
+        self.bnIngresar.setEnabled(True)
+        self.bnTerminar.setEnabled(True)
+
+    # Inicio CRUD -----------------------------------------------------------------------------------------
+
+    # Ingresar
 
     def ingresarDato(self):
         self.bnBuscar.setEnabled(True)
@@ -189,8 +204,9 @@ class ExternasView(QtW.QGroupBox):
             
             if self.metodo == "Mod" or self.metodo == "Cuadratico" or self.metodo == "Plegamiento" or self.metodo == "Truncamiento":
                 
-                if len(str(d)) != 4:
+                """if len(str(d)) != 4:
                     self.imprimirTexto("La longitud de la clave debe ser 4")
+                    return
                 if d not in self.listaDatos:
                     self.listaDatos.append(d)
                     self.cargarDatos()
@@ -199,7 +215,9 @@ class ExternasView(QtW.QGroupBox):
                     self.ingresoDato.setText("")
                 else:
                     self.imprimirTexto("La clave ya se encuentra en la estructura")
-                    return
+                    return"""
+                
+                return
             
             if self.metodo == "Secuencial" or self.metodo == "Binaria":
             
@@ -217,9 +235,10 @@ class ExternasView(QtW.QGroupBox):
                     return
                 
         except:
-            self.imprimirTexto("Ingreso para registro caracteres no numericos")
+            self.imprimirTexto("La clave no puede tener caracteres no numéricos")
             return
         
+    # Eliminar
 
     def eliminarDato(self):
         d = 0
@@ -237,64 +256,22 @@ class ExternasView(QtW.QGroupBox):
                 self.tabla.setRowCount(0)
                 self.crearTabla()
                 self.cargarDatos()
-                self.cargarDatosSecuencialesBinarios()
+                if self.metodo != "Secuencial" and self.metodo != "Binaria":
+                    """self.funcionesHash()"""
+                    return
+                else:
+                    self.cargarDatosSecuencialesBinarios()
                 self.imprimirTexto("Dato Eliminado (" + str(d) + ")")
                 self.ingresoDato.setText("")
                 
         except:
-            self.imprimirTexto("La clave no puede tener caracteres no numericos")
+            self.imprimirTexto("La clave no puede tener caracteres no numéricos")
             return
 
-    def cargarDatos(self):
-        tablerow = 0
-        for i in self.listaDatos:
-            self.tabla.setItem(tablerow, 1, QtW.QTableWidgetItem(str(i)))
-            tablerow += 1
-
-    def reiniciar(self):
-        self.rango = None
-        self.listaDatos = []
-        self.bnEstructura.setEnabled(True)
-        self.opcionMetodoHash.setEnabled(True)
-        self.tamanoEstructura.setEnabled(True)
-        self.bnReiniciar.setEnabled(False)
-        self.bnTerminar.setEnabled(False)
-        self.bnIngresar.setEnabled(False)
-        self.registroProcess.setText("")
-
-    def busqueda(self):
-        self.metodo = self.opcionMetodoHash.currentText()
-        if self.metodo != "Secuencial" and self.metodo != "Binaria":
-            self.listaDatos.clear()
-            self.tabla.setRowCount(0)
-            self.tablaBloques.setRowCount(0)
-            self.crearTabla()
-        self.bnIngresar.setEnabled(True)
-        self.bnTerminar.setEnabled(True)
+    # Buscar
 
     def buscar(self):
-        if self.metodo  == "Binaria":
-            self.binario()
-        elif self.metodo == "Secuencial":
-            self.secuencial()
-        else:
-            r = 0
-            try:
-                if(self.txbuscar.toPlainText() != ''):
-                    r = int(self.txbuscar.toPlainText())
-            except:
-                self.imprimirTexto("Ingreso para registro caracteres no numericos")
-                return
-            j = 0
-            while j < self.rango - 1:
-                bloque = 1
-                for i in self.hash.buscarElemento(j):
-                    if r == i:
-                        self.imprimirTexto(f"El dato {r} se encuentra ubicado en la cubeta {j}, en el bloque {bloque}")
-                    bloque += 1
-                j += 1
 
-    def secuencial(self):
         r = 0
         try:
             if(self.txbuscar.toPlainText() != ''):
@@ -302,6 +279,23 @@ class ExternasView(QtW.QGroupBox):
         except:
             self.imprimirTexto("Ingreso para registro caracteres no numericos")
             return
+
+        if self.metodo  == "Binaria":
+            self.binario(r)
+        elif self.metodo == "Secuencial":
+            self.secuencial(r)
+        else:
+            """j = 0
+            while j < self.rango - 1:
+                bloque = 1
+                for i in self.hash.buscarElemento(j):
+                    if r == i:
+                        self.imprimirTexto(f"El dato {r} se encuentra ubicado en la cubeta {j}, en el bloque {bloque}")
+                    bloque += 1
+                j += 1"""
+            return
+
+    def secuencial(self, r):
         
         multilista = self.cargarDatosSecuencialesBinarios()
         
@@ -311,14 +305,7 @@ class ExternasView(QtW.QGroupBox):
 
         self.txbuscar.setText("")
 
-    def binario(self):
-        r = 0
-        try:
-            if(self.txbuscar.toPlainText() != ''):
-                r = int(self.txbuscar.toPlainText())
-        except:
-            self.imprimirTexto("Ingreso para registro caracteres no numericos")
-            return
+    def binario(self, r):
         
         multilista = self.cargarDatosSecuencialesBinarios()
 
@@ -327,29 +314,11 @@ class ExternasView(QtW.QGroupBox):
         self.registroProcess.setText(BS.Binario.busqueda(tt))
         
         self.txbuscar.setText("")
-
-    def cargarDatosSecuencialesBinarios(self):
-        self.tablaBloques.setRowCount(0)
-        tamano_bloque = BS.calcular_tamano_bloques(self.rango)
-        multilista = BS.guardar_en_bloques(self.listaDatos, tamano_bloque)
-
-        for i, bloque in enumerate(multilista):
-            self.cubetas = i + 1
-            self.tablaBloques.setColumnCount(self.cubetas)
-
-        self.tablaBloques.setRowCount(tamano_bloque)
-
-        for i, bloque in enumerate(multilista):
-            self.cubetas = i + 1
-            tablerow = 0
-            for elemento in bloque:
-                self.tablaBloques.setItem(tablerow, i, QtW.QTableWidgetItem(str(elemento)))
-                tablerow += 1
-        return multilista
-
+    
+    # Parte de la funciones HASH
 
     def funcionesHash(self):
-        self.hash = TransfClaves(self.metodo, self.rango)
+        """self.hash = TransfClaves(self.metodo, self.rango)
         
         for dato in self.listaDatos:
             clave = self.hash.obtenerClave(dato)
@@ -368,8 +337,57 @@ class ExternasView(QtW.QGroupBox):
             for i in self.hash.buscarElemento(j):
                 self.tablaBloques.setItem(tablerow, j, QtW.QTableWidgetItem(str(i)))
                 tablerow += 1
-            j += 1
+            j += 1"""
+        return
         
+    # Impresión en pantalla
+
     def imprimirTexto(self,texto:str):
         self.registroProcess.setText(self.registroProcess.toPlainText()+"\n >"+texto)
+
+    # Visualización de las tablas
+
+    def crearTabla(self):
+        for i in range(0, self.rango):
+            self.tabla.insertRow(i)
+            self.tabla.setItem(i, 0, QtW.QTableWidgetItem(str(i + 1)))
+
+    def cargarDatos(self):
+        tablerow = 0
+        for i in self.listaDatos:
+            self.tabla.setItem(tablerow, 1, QtW.QTableWidgetItem(str(i)))
+            tablerow += 1
+
+    def cargarDatosSecuencialesBinarios(self):
+        self.tablaBloques.setRowCount(0)
+        tamano_bloque = BS.calcular_tamano_bloques(self.rango)
+        multilista = BS.guardar_en_bloques(self.listaDatos, tamano_bloque)
+
+        for i, bloque in enumerate(multilista):
+            self.cubetas = i + 1
+            self.tablaBloques.setColumnCount(self.cubetas)
+
+        self.tablaBloques.setRowCount(tamano_bloque)
+
+        for i, bloque in enumerate(multilista):
+            self.cubetas = i + 1
+            tablerow = 0
+            for elemento in bloque:
+                self.tablaBloques.setItem(tablerow, i, QtW.QTableWidgetItem(str(elemento)))
+                tablerow += 1
+        
+        return multilista
+
+    # Botón reinicio
+
+    def reiniciar(self):
+        self.rango = None
+        self.listaDatos = []
+        self.bnEstructura.setEnabled(True)
+        self.opcionMetodoHash.setEnabled(True)
+        self.tamanoEstructura.setEnabled(True)
+        self.bnReiniciar.setEnabled(False)
+        self.bnTerminar.setEnabled(False)
+        self.bnIngresar.setEnabled(False)
+        self.registroProcess.setText("")
 
