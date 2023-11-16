@@ -16,7 +16,7 @@ class IndicesView(QtW.QGroupBox):
         self.logica = LogicIndexs()
 
         self.ventanaCanvas = QtW.QScrollArea(self)
-        self.ventanaCanvas.setGeometry(450,30,590,650)
+        self.ventanaCanvas.setGeometry(450,30,850,820)
         self.ventanaCanvas.verticalScrollBar().setVisible(False)
         self.ventanaCanvas.verticalScrollBar().setEnabled(False)
         self.ventanaCanvas.horizontalScrollBar().setVisible(True)
@@ -34,7 +34,7 @@ class IndicesView(QtW.QGroupBox):
         for i in range(0, 10):
             s = 0
             if i > 0:
-                s+= 10 * i
+                s+= 50 * i
             
             label = QtW.QLabel("", self.panel)
             label.move(self.x + (i * 200) + s, self.y - 40)
@@ -52,12 +52,12 @@ class IndicesView(QtW.QGroupBox):
             header_item = QtW.QTableWidgetItem("Dir")
             header_item.setFont(QFont("Arial", 12, QFont.Bold))
             Structura.setHorizontalHeaderItem(0,header_item)
-            Structura.setColumnWidth(0, 50)
+            Structura.setColumnWidth(0, 80)
 
             header_item = QtW.QTableWidgetItem("Clave")
             header_item.setFont(QFont("Arial", 12, QFont.Bold))
             Structura.setHorizontalHeaderItem(1,header_item)
-            Structura.setColumnWidth(1, 144)
+            Structura.setColumnWidth(1, 110)
 
             Structura.setStyleSheet("background-color:#DECCA6")
             Structura.verticalHeader().setVisible(False)
@@ -144,7 +144,7 @@ class IndicesView(QtW.QGroupBox):
         self.bnCreate.clicked.connect(self.verifyCompleteData)
         # Boton reiniciar
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
-        self.bnReiniciar.setGeometry(10, 650, 420, 30)
+        self.bnReiniciar.setGeometry(10, 820, 420, 30)
         self.bnReiniciar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
                                    "QPushButton::hover{background-color :#D4C2AD;}"
                                    "QPushButton::pressed{background-color:#EFDFCC; }")
@@ -154,7 +154,7 @@ class IndicesView(QtW.QGroupBox):
         self.consola = QtW.QTextEdit(self)
         self.consola.setFrameStyle(1)
         self.consola.move(10, 420)
-        self.consola.resize(420, 218)
+        self.consola.resize(420, 388)
         self.consola.setReadOnly(True)
         self.consola.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
         self.consola.setFont(QFont("Arial", 12))
