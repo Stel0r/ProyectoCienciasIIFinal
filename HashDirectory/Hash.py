@@ -12,14 +12,14 @@ class TransfClaves():
       if recorrido >= self.tamaño:
         recorrido = 0
       if recorrido == origen - 1:
-        self.mError = "La estructura esta llena no se pudo solucionar la colicion de la clave " + str(origen)
+        self.mError = "La estructura esta llena, no se pudo solucionar la colisión para la clave " + str(origen)
         save = False
         break
       if recorrido + 1 not in self.estructura:
         self.estructura[recorrido +1] = valorCol
         save = False
         recorrido = recorrido + 1
-        self.mSolColision = "Solucion Lineal clave: " + str(recorrido) + ", del valor: " + str(valorCol) + " se busco un espacio " + str(count) + " veces"
+        self.mSolColision = "Se aplica el método de solución lineal. Se encuentra disponible la dirección de memoria " + str(recorrido) + " para la clave " + str(valorCol) + ". Se aplico el método de solución " + str(count) + " veces"
         break
       recorrido+=1
 
@@ -31,11 +31,11 @@ class TransfClaves():
 
       if nuevaClave not in self.estructura:
         self.estructura[nuevaClave] = valorCol
-        self.mSolColision = "Solucion cuadratica clave: " + str(nuevaClave) + " del valor: " + str(valorCol) + ", ultimo calculo: " + str(i+1) + "^2"
+        self.mSolColision = "Se aplica el método de solución cuadrática.  Se encuentra disponible la dirección de memoria " + str(nuevaClave) + " para la clave " + str(valorCol) + ". Último cálculo para encontrar la dirección: " + str(i+1) + "^2"
         return
 
-    self.mError = ("El valor " + str(valorCol) + " no se pudo solucionar su colision con Cuadratica, se realizaron: " + str(self.tamaño) +
-                   " calculos de solución cuadratica sin resultados efectivos")
+    self.mError = ("No se encontro solución de colisión para la clave " + str(valorCol) + " usando el método cuadrático, se realizaron: " + str(self.tamaño) +
+                   " calculos de solución sin resultados efectivos")
 
   def solColiDobleHash(self, valorCol, posicion):
     danterior = posicion
@@ -45,13 +45,13 @@ class TransfClaves():
       d = ((d + 1) % self.tamaño) + 1
       if d not in self.estructura:
         self.estructura[d] = valorCol
-        self.mSolColision = ("Solucion Doble Hash clave: " + str(d) + ", del valor: " + str(valorCol) +
-                             ", ultimo calulo realizado H(" + str(danterior) + ") = ((" + str(
+        self.mSolColision = ("Se aplica el método de solución doble función hash. Se encuentra disponible la dirección de memoria " + str(d) + " para la clave " + str(valorCol) +
+                             ". Se aplica la función H(" + str(danterior) + ") = ((" + str(
                   danterior) + " + 1) mod " + str(self.tamaño) + ") + 1")
         return
-    self.mError = ("El valor " + str(
-      valorCol) + " no se pudo solucionar su colision con Doble Hash, se realizaron: " + str(self.tamaño) +
-                   " calculos de solución cuadratica sin resultados efectivos")
+    self.mError = ("No se encontro solución de colisión para la clave " + str(
+      valorCol) + " usando el método doble función hash, se realizaron: " + str(self.tamaño) +
+                   " calculos de solución sin resultados efectivos")
 
     
   def ordenar(self):
@@ -91,7 +91,7 @@ class TransfClaves():
       if clave > self.tamaño:
         clave = clave % (10**init)
     else:
-        raise Exception("La Funcion Dada no es Valida")
+        raise Exception("La función dada no es válida")
     return clave
 
   def ingresarValor(self, value):
@@ -103,7 +103,7 @@ class TransfClaves():
 
     if (len(self.estructura) < self.tamaño):
       if(clave in self.estructura):
-        self.mColision = "El elemento "+ str(value) + " presenta una colision con "+str(self.estructura.get(clave))+ " al intentar guardarlo con la clave "+str(clave)
+        self.mColision = "La clave "+ str(value) + " presenta una colisión con la clave "+str(self.estructura.get(clave))+ " al intentar insertarla en la dirección de memoria "+str(clave)
         if self.colision == "Lineal":
           self.solColiLineal(value, clave)
         elif self.colision == "Cuadratico":
@@ -113,9 +113,9 @@ class TransfClaves():
           
       else:
         self.estructura[clave] = value
-        self.mIngreso = "se ha guardado exitosamente a "+str(value)+ " | clave: "+str(clave)
+        self.mIngreso = "Se ha insertado exitosamente la clave "+str(value)+ " en la dirección de memoria "+str(clave)
     else:
-      self.mError = "La estructura ya esta llena, no se ha introducido " + str(value)
+      self.mError = "La estructura ya esta llena, no es posible insertar la clave " + str(value)
     self.ordenar()
   
   def __init__(self, funcion, tamaño, colision):
