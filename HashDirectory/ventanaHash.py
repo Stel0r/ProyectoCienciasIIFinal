@@ -18,7 +18,7 @@ class HashView(QtW.QGroupBox):
 
         self.tabla = QtW.QTableWidget(self)
         self.tabla.setColumnCount(2)
-        self.tabla.setHorizontalHeaderLabels(["Clave", "Valor"])
+        self.tabla.setHorizontalHeaderLabels(["Dirección", "Clave"])
         self.tabla.setGeometry(995, 20, 300, 820)
         self.tabla.horizontalScrollBar().setVisible(False)
         self.tabla.setColumnWidth(0, 145)
@@ -28,7 +28,7 @@ class HashView(QtW.QGroupBox):
         self.tabla.setStyleSheet("QTableWidget{border:1px solid black; background-color:#EBE6D2}")
 
         # seccion de entradas
-        label = QtW.QLabel("Metodo hash", self)
+        label = QtW.QLabel("Método Hash", self)
         label.move(10, 10)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.opcionMetodoHash = QtW.QComboBox(self)
@@ -38,7 +38,7 @@ class HashView(QtW.QGroupBox):
         self.opcionMetodoHash.setFont(QFont("Arial", 12, QFont.Bold))
         self.opcionMetodoHash.setStyleSheet("background-color:#EBE6D2")
 
-        label = QtW.QLabel("Metodo Solucion de Colisiones", self)
+        label = QtW.QLabel("Método Solución de Colisiones", self)
         label.move(190, 10)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.opcionSolColision = QtW.QComboBox(self)
@@ -58,7 +58,7 @@ class HashView(QtW.QGroupBox):
         self.tamanoEstructura.setFont(QFont("Arial", 12))
         self.tamanoEstructura.setStyleSheet("background-color:#EBE6D2")
 
-        label = QtW.QLabel("Ingresar Registro (Solo se admiten registro numericos)", self)
+        label = QtW.QLabel("Ingresar clave (Solo se admiten claves numéricas)", self)
         label.move(10, 100)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.ingresoDato = QtW.QTextEdit(self)
@@ -119,14 +119,14 @@ class HashView(QtW.QGroupBox):
             if(self.tamanoEstructura.toPlainText() != ''):
                 t = int(self.tamanoEstructura.toPlainText())
             if(t <= 0):
-                self.errWarning("Por Favor el tamaño debe ser mayor a 0")
+                self.errWarning("Ingrese un tamaño mayor a 0")
                 return
         except:
-            self.errWarning("Ingresó para tamaño letras o caracteres, ingrese valores numericos")
+            self.errWarning("Ingrese únicamente valores numéricos para el tamaño")
             return
 
         self.hash = TransfClaves(self.opcionMetodoHash.currentText(), t, self.opcionSolColision.currentText())
-        self.processSuccess("Estructura definida")
+        self.processSuccess("Estructura creada")
         self.errWarning("")
         self.crearTabla()
         self.bnEstructura.setEnabled(False)
@@ -138,20 +138,20 @@ class HashView(QtW.QGroupBox):
     def ingresarDato(self):
         d = 0
         if self.hash is None:
-            self.errWarning("Estructura no definida")
+            self.errWarning("Aún no se ha creado la estructura")
             return
         try:
             if(self.ingresoDato.toPlainText() != ''):
                 d = int(self.ingresoDato.toPlainText())
             if(d <= 0):
-                self.errWarning("Por Favor ingrese un Registro numerico mayor a 0")
+                self.errWarning("Por Favor ingrese una clave numérica mayor a 0")
                 return
         except:
-            self.errWarning("Ingresó por Registro, caracteres o letras, ingrese registros numericos")
+            self.errWarning("Ingrese únicamente claves numéricas")
             return
 
         self.hash.ingresarValor(d)
-        self.processSuccess("Dato Ingresado (" + str(d) + ")")
+        self.processSuccess("Clave insertada (" + str(d) + ")")
         self.errWarning("")
         self.cargarDatos()
         self.registrarProceso()
