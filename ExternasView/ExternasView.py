@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets as QtW
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5 import QtGui
@@ -204,18 +204,22 @@ class ExternasView(QtW.QGroupBox):
             
             if self.metodo == "Mod" or self.metodo == "Cuadratico" or self.metodo == "Plegamiento" or self.metodo == "Truncamiento":
                 
-                """if len(str(d)) != 4:
-                    self.imprimirTexto("La longitud de la clave debe ser 4")
+                if len(self.listaDatos) > self.rango-1:
+                    self.imprimirTexto("La estructura ya está llena")
+                    return
+                if len(str(d)) != 6:
+                    self.imprimirTexto("La longitud de la clave debe ser 6")
                     return
                 if d not in self.listaDatos:
                     self.listaDatos.append(d)
+                    self.listaDatos.sort()
                     self.cargarDatos()
                     self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
                     self.funcionesHash()
                     self.ingresoDato.setText("")
                 else:
                     self.imprimirTexto("La clave ya se encuentra en la estructura")
-                    return"""
+                    return
                 
                 return
             
@@ -226,6 +230,7 @@ class ExternasView(QtW.QGroupBox):
                     return
                 if d not in self.listaDatos:
                     self.listaDatos.append(d)
+                    self.listaDatos.sort()
                     self.cargarDatos()
                     self.cargarDatosSecuencialesBinarios()
                     self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
@@ -257,7 +262,7 @@ class ExternasView(QtW.QGroupBox):
                 self.crearTabla()
                 self.cargarDatos()
                 if self.metodo != "Secuencial" and self.metodo != "Binaria":
-                    """self.funcionesHash()"""
+                    self.funcionesHash()
                     return
                 else:
                     self.cargarDatosSecuencialesBinarios()
@@ -280,20 +285,26 @@ class ExternasView(QtW.QGroupBox):
             self.imprimirTexto("Ingreso para registro caracteres no numericos")
             return
 
-        if self.metodo  == "Binaria":
+        if self.metodo == "Binaria":
             self.binario(r)
         elif self.metodo == "Secuencial":
             self.secuencial(r)
         else:
-            """j = 0
-            while j < self.rango - 1:
+            encontrado = False
+            j = 0
+            while j < self.rango - 1 and not encontrado:
                 bloque = 1
                 for i in self.hash.buscarElemento(j):
                     if r == i:
                         self.imprimirTexto(f"El dato {r} se encuentra ubicado en la cubeta {j}, en el bloque {bloque}")
+                        self.resaltarElementoEncontrado(bloque, j)
+                        encontrado = True
+                        break
                     bloque += 1
-                j += 1"""
-            return
+                j += 1
+
+            if not encontrado:
+                self.imprimirTexto(f"El dato {r} no se encontró en la estructura")
 
     def secuencial(self, r):
         
@@ -301,9 +312,13 @@ class ExternasView(QtW.QGroupBox):
         
         bloque, numeroBloque = BS.busqueda_por_bloques(multilista, int(r))
         ob = BS.Secuencial(bloque, numeroBloque, int(r))
-        self.registroProcess.setText(BS.Secuencial.busqueda(ob))
-
-        self.txbuscar.setText("")
+        resultado = BS.Secuencial.busqueda(ob)
+        self.registroProcess.setText(resultado)
+        if "no se encontró" not in resultado:
+            
+            self.resaltarElementoEncontrado(numeroBloque - 1, bloque.index(int(r)))
+        else:
+            self.txbuscar.setText("")
 
     def binario(self, r):
         
@@ -311,34 +326,44 @@ class ExternasView(QtW.QGroupBox):
 
         bloque, numeroBloque = BS.busqueda_por_bloques(multilista, int(r))
         tt = BS.Binario(bloque, numeroBloque, int(r))
-        self.registroProcess.setText(BS.Binario.busqueda(tt))
-        
-        self.txbuscar.setText("")
+        resultado = BS.Binario.busqueda(tt)
+        self.registroProcess.setText(resultado)
+        if "no se encontró" not in resultado:
+            
+            self.resaltarElementoEncontrado(numeroBloque - 1, bloque.index(int(r)))
+        else:
+            self.txbuscar.setText("")
     
     # Parte de la funciones HASH
 
     def funcionesHash(self):
-        """self.hash = TransfClaves(self.metodo, self.rango)
+        self.hash = TransfClaves(self.metodo, self.rango)
         
         for dato in self.listaDatos:
             clave = self.hash.obtenerClave(dato)
             self.hash.ingresarValor(clave, dato)
 
         self.tablaBloques.setRowCount(0)
-        self.tablaBloques.setColumnCount(0)
-        for i in range(0, self.rango):
-            self.tablaBloques.insertColumn(i)
-            self.tablaBloques.insertRow(i)
-            self.tablaBloques.setHorizontalHeaderItem(i, QtW.QTableWidgetItem(str(i)))
+        self.tablaBloques.setColumnCount(1)
+        columnas = ['Cubetas']
+        self.tablaBloques.setHorizontalHeaderLabels(columnas)
 
-        j = 0
-        while j < self.rango - 1:
-            tablerow = 0
-            for i in self.hash.buscarElemento(j):
-                self.tablaBloques.setItem(tablerow, j, QtW.QTableWidgetItem(str(i)))
-                tablerow += 1
-            j += 1"""
-        return
+         # Establecer el número de filas y columnas en la tabla
+        filas = len(self.hash.diccionario)
+        columnas = max(len(sublista) for sublista in self.hash.diccionario) + 1
+
+        self.tablaBloques.setRowCount(filas)
+        self.tablaBloques.setColumnCount(columnas)
+
+        encabezados = ["Cubeta"] + [f"Registro {i+1}" for i in range(columnas-1)]
+        self.tablaBloques.setHorizontalHeaderLabels(encabezados)
+        
+        for i, sublista in enumerate(self.hash.diccionario):
+            # Configurar el número de cubeta
+            self.tablaBloques.setItem(i, 0, QTableWidgetItem(f"{i+1}"))
+
+            for j, elemento in enumerate(sublista):
+                self.tablaBloques.setItem(i, j+1, QTableWidgetItem(str(elemento)))
         
     # Impresión en pantalla
 
@@ -390,4 +415,17 @@ class ExternasView(QtW.QGroupBox):
         self.bnTerminar.setEnabled(False)
         self.bnIngresar.setEnabled(False)
         self.registroProcess.setText("")
+        self.tabla.clear()
+        self.tablaBloques.clear()
 
+    # Coloreado de celdas
+    def resaltarElementoEncontrado(self, fila, columna):
+        
+        for i in range(self.tablaBloques.rowCount()):
+            for j in range(self.tablaBloques.columnCount()):
+                item = self.tablaBloques.item(i, j)
+                if item:
+                    item.setBackground(QtGui.QColor("#EBE6D2"))  
+        
+        item = self.tablaBloques.item(columna, fila)
+        item.setBackground(QtGui.QColor("Green"))
