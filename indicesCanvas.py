@@ -52,7 +52,9 @@ class LogicIndexs():
     
     def Multinivel(self, Tipo: str):
         l = self.UnNivel(Tipo)
-        return self.calcularMultinivel([l[2], l[3]], 1, [[l[0], l[1]]])
+        g = self.calcularMultinivel([l[2], l[3]], 1, [[l[0], l[1]]])
+        print(g)
+        return g
 
     def calcularMultinivel(self, ListaUse, c, returnList):
         returnList.append(ListaUse)
@@ -66,4 +68,4 @@ class LogicIndexs():
                 returnList.append([ListaUse[0], BRI])
             return returnList
         else:
-            self.calcularMultinivel([ListaUse[0], BRI], c + 1, returnList)
+            return self.calcularMultinivel([ListaUse[0], BRI], c + 1, returnList)
