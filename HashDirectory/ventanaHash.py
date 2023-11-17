@@ -49,11 +49,11 @@ class HashView(QtW.QGroupBox):
         self.opcionSolColision.setStyleSheet("background-color:#EBE6D2")
 
         label = QtW.QLabel("Tamaño Estructura", self)
-        label.move(480, 10)
+        label.move(500, 10)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.tamanoEstructura = QtW.QTextEdit(self)
         self.tamanoEstructura.setFrameStyle(1)
-        self.tamanoEstructura.move(480, 40)
+        self.tamanoEstructura.move(500, 40)
         self.tamanoEstructura.resize(140, 30)
         self.tamanoEstructura.setFont(QFont("Arial", 12))
         self.tamanoEstructura.setStyleSheet("background-color:#EBE6D2")

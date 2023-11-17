@@ -35,12 +35,12 @@ class BusquedasInView(QGroupBox):
 
         #seccion de entradas
         label = QLabel("Tipo de Busqueda",self)
-        label.move(80,125)
+        label.move(40,125)
         label.setFont(QFont("Arial",12,QFont.Bold))
         self.opcionTipoBusq = QComboBox(self)
         self.opcionTipoBusq.addItems(["Secuencial","Binaria"])
-        self.opcionTipoBusq.move(235,120)
-        self.opcionTipoBusq.resize(120,30)
+        self.opcionTipoBusq.move(215,120)
+        self.opcionTipoBusq.resize(135,30)
         self.opcionTipoBusq.setFont(QFont("Arial",12,QFont.Bold))
         self.opcionTipoBusq.setStyleSheet("background-color:#EBE6D2")
 
@@ -59,13 +59,13 @@ class BusquedasInView(QGroupBox):
         label.setFont(QFont("Arial",12,QFont.Bold))
         self.campoDigitos = QTextEdit(self)
         self.campoDigitos.setFrameStyle(1)
-        self.campoDigitos.move(665,120)
+        self.campoDigitos.move(685,120)
         self.campoDigitos.resize(80,30)
         self.campoDigitos.setFont(QFont("Arial",12))
         self.campoDigitos.setStyleSheet("background-color:#EBE6D2")
 
         botonGenerar = QPushButton("Generar",panelEstructura)
-        botonGenerar.setGeometry(780,100,120,30)
+        botonGenerar.setGeometry(800,100,120,30)
         botonGenerar.setFont(QFont("Arial",12))
         botonGenerar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
@@ -84,7 +84,7 @@ class BusquedasInView(QGroupBox):
         self.labelCampResNum.setVisible(False)
         self.campoCampResNum = QTextEdit(self)
         self.campoCampResNum.setFrameStyle(1)
-        self.campoCampResNum.move(350,220)
+        self.campoCampResNum.move(365,220)
         self.campoCampResNum.resize(80,30)
         self.campoCampResNum.setFont(QFont("Arial",12))
         self.campoCampResNum.setVisible(False)
