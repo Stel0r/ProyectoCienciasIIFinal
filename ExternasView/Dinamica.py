@@ -31,7 +31,7 @@ class Dinamicas:
 
   def inicializateTable(self):
       self.StructureDinamic = [[0 for _ in range(self.Cubetas)]
-                               for _ in range(self.Registros)]
+                                for _ in range(self.Registros)]
 
   def insertClave(self, Clave: int):
       if Clave != 0:
@@ -93,6 +93,7 @@ class Dinamicas:
           elif self.Tipo == "Parcial":
               self.reduc_table_parcial();
           self.insertClave(0)
+
 
   def reduc_table_total(self):
       self.Cubetas = self.Cubetas / 2

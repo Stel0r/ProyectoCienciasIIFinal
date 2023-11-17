@@ -126,6 +126,7 @@ class DinamicaView(QtW.QGroupBox):
                                         "QPushButton::pressed{background-color:#6e8679; }")
         self.bnEstructura.clicked.connect(self.testEstructure)
 
+        """ Ingresar clave """
         self.bnIngresar = QtW.QPushButton("Agregar clave", self)
         self.bnIngresar.setGeometry(180, 380, 130, 30)
         self.bnIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
@@ -134,8 +135,20 @@ class DinamicaView(QtW.QGroupBox):
         self.bnIngresar.clicked.connect(self.ingresarDato)
         self.bnIngresar.setEnabled(False)
 
+
+        """ Buscar clave """
+        self.bnBuscar = QtW.QPushButton("Búscar clave", self)
+        self.bnBuscar.setGeometry(320, 380, 130, 30)
+        self.bnBuscar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                    "QPushButton::hover{background-color :#8fa89a;}"
+                                    "QPushButton::pressed{background-color:#6e8679; }")
+        self.bnBuscar.clicked.connect(self.buscarDato)
+        self.bnBuscar.setEnabled(False)
+
+
+        """ Eliminar clave """
         self.bnTerminar = QtW.QPushButton("Eliminar clave", self)
-        self.bnTerminar.setGeometry(320, 380, 130, 30)
+        self.bnTerminar.setGeometry(460, 380, 130, 30)
         self.bnTerminar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -167,14 +180,15 @@ class DinamicaView(QtW.QGroupBox):
             self.imprimirTexto("Ingreso para tamaño caracteres no numericos")
             return
 
-        self.cubetas = cub
-        self.registros = reg
-        self.doexpansion = exp
-        self.doreduccion = red
-        self.estructura = D.Dinamicas(self.cubetas, self.registros, self.doexpansion, self.doreduccion, self.opcionMetodo.currentText())
+        self._cubetas = cub
+        self._registros = reg
+        self._doexpansion = exp
+        self._doreduccion = red
+        self.estructura = D.Dinamicas(self._cubetas, self._registros, self._doexpansion, self._doreduccion, self.opcionMetodo.currentText())
         self.imprimirTexto("Estructura definida")
         self.bnEstructura.setEnabled(False)
         self.bnIngresar.setEnabled(True)
+        self.bnBuscar.setEnabled(True)
         self.bnTerminar.setEnabled(True)
         self.bnReiniciar.setEnabled(True)
 
@@ -191,17 +205,20 @@ class DinamicaView(QtW.QGroupBox):
                 self.estructura.event = False
                 self.listaDatos.append(d)
                 self.estructura.insertClave(d)
-                self.cargarDatos()
                 self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
                 self.ingresoDato.setText("")
                 self.mostrarEstructura()
                 if self.estructura.event:
                     self.estructura.event = False
                     self.warningError("La estructura se va a expandir")
+                    self.cargarDatos()
+                    
                     self.mostrarEstructura()
+                    
             else:
                 self.imprimirTexto("La clave ya se encuentra en la estructura")
                 return
+            self.cargarDatos()
         except:
             self.imprimirTexto("La clave no puede tener caracteres no numericos")
             return
@@ -266,7 +283,42 @@ class DinamicaView(QtW.QGroupBox):
                     x = ""
                 self.tablaBloques.setItem(i, j, QtW.QTableWidgetItem(str(x)))
 
+    def buscarDato(self):
+        estructuraTemp = []
+        if self.estructura.event:
+            estructuraTemp = self.estructura.historico
+        else:
+            estructuraTemp = self.estructura.StructureDinamic
+        d = 0
+        try:
+            if self.ingresoDato.toPlainText() != '':
+                d = int(self.ingresoDato.toPlainText())
+        except:
+            self.imprimirTexto("La clave no puede tener caracteres no numericos")
+            return
+
+        if d <= 0:
+            self.imprimirTexto("Por Favor ingrese una clave mayor a 0")
+            return
+
+        if d in self.listaDatos:
+            texto = ""
+            for i in range(0, len(estructuraTemp)):
+                for j in range(0, len(estructuraTemp[0])):
+                    x = estructuraTemp[i][j]
+                    if x == d:
+                        texto = f"La clave se encuenta en el registro {i+1} de la cubeta {j}"
+            self.imprimirTexto(texto)
+        else:
+            self.imprimirTexto("La clave no se encuentra en la estructura")
+
+
+    def limpiarEstructura(self):
+            self.tablaBloques.setRowCount(0)
+            self.tablaBloques.setColumnCount(0)
     def reiniciar(self):
+
+        
         self.rango = None
         self.listaDatos = []
         self.bnEstructura.setEnabled(True)
@@ -275,6 +327,33 @@ class DinamicaView(QtW.QGroupBox):
         self.bnTerminar.setEnabled(False)
         self.bnIngresar.setEnabled(False)
         self.registroProcess.setText("")
+    
+        self.numcubeta.setText("")
+        self.numregistro.setText("")
+        self.doexpansion.setText("")
+        self.doreduccion.setText("")
+
+        self.estructura.ListClaves = []
+        self.cargarDatos()
+        """ estructuraTemp = []
+        if self.estructura.event:
+            estructuraTemp = self.estructura.historico
+        else:
+            estructuraTemp = self.estructura.StructureDinamic
+        
+        self.tablaBloques.setColumnCount(0)
+        self.tablaBloques.setRowCount(0)
+        self.tablaBloques.setColumnCount(len(estructuraTemp[0])) """
+        """ self.tablaBloques.setHorizontalHeaderLabels([str(i) for i in range(0, len(estructuraTemp[0]))]) """
+        """ self.tablaBloques.setVerticalHeaderLabels([str(i) for i in range(0, self.estructura.Registros)]) """
+        self.mostrarEstructura()
+        self.limpiarEstructura()
+        
+
+   
+        
+   
+
         
     def imprimirTexto(self,texto:str):
         self.registroProcess.setText(self.registroProcess.toPlainText()+"\n >"+texto)
