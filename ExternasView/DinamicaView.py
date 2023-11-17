@@ -241,6 +241,7 @@ class DinamicaView(QtW.QGroupBox):
                 self.estructura.insertClave(d)
                 self.cargarDatos()
                 self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
+                self.cargarDatos()
                 self.ingresoDato.setText("")
                 self.mostrarEstructura()
                 if self.estructura.event:
