@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from BusquedasInView.Estructuras.Binario import Binario
+from CamposView.Campos import Campos
 
 from BusquedasInView.Estructuras.EstructuraInterna import EstructuraInterna
 from BusquedasInView.Estructuras.Secuencial import Secuencial
@@ -10,6 +11,8 @@ class BusquedasInView(QGroupBox):
     def __init__(self, p:QWidget):
         super().__init__(p)
 
+        # variable para la informacion
+        self.campos=Campos()
         #variables logicas
         self.estructura:EstructuraInterna = None
         self.datoBuscado : int = None
@@ -77,18 +80,42 @@ class BusquedasInView(QGroupBox):
         self.labelTitIng.move(120,160)
         self.labelTitIng.setFont(QFont("Arial",12,QFont.Bold))
         self.labelTitIng.setVisible(False)
-        
+
         self.labelCampResNum = QLabel("Clave Numerica",panelEstructura)
-        self.labelCampResNum.move(200,205)
+        self.labelCampResNum.move(200,185)
         self.labelCampResNum.setFont(QFont("Arial",12,QFont.Bold))
         self.labelCampResNum.setVisible(False)
         self.campoCampResNum = QTextEdit(self)
         self.campoCampResNum.setFrameStyle(1)
-        self.campoCampResNum.move(365,220)
+        self.campoCampResNum.move(365,200)
         self.campoCampResNum.resize(80,30)
         self.campoCampResNum.setFont(QFont("Arial",12))
         self.campoCampResNum.setVisible(False)
         self.campoCampResNum.setStyleSheet("background-color:#EBE6D2")
+
+        self.labelNombreA = QLabel("Nombre",panelEstructura)
+        self.labelNombreA.move(200,225)
+        self.labelNombreA.setFont(QFont("Arial",12,QFont.Bold))
+        self.labelNombreA.setVisible(False)
+        self.campoNombreA = QTextEdit(self)
+        self.campoNombreA.setFrameStyle(1)
+        self.campoNombreA.move(320,245)
+        self.campoNombreA.resize(80,30)
+        self.campoNombreA.setFont(QFont("Arial",12))
+        self.campoNombreA.setVisible(False)
+        self.campoNombreA.setStyleSheet("background-color:#EBE6D2")
+
+        self.labelEdadA = QLabel("Edad",panelEstructura)
+        self.labelEdadA.move(200,275)
+        self.labelEdadA.setFont(QFont("Arial",12,QFont.Bold))
+        self.labelEdadA.setVisible(False)
+        self.campoEdadA = QTextEdit(self)
+        self.campoEdadA.setFrameStyle(1)
+        self.campoEdadA.move(320,290)
+        self.campoEdadA.resize(80,30)
+        self.campoEdadA.setFont(QFont("Arial",12))
+        self.campoEdadA.setVisible(False)
+        self.campoEdadA.setStyleSheet("background-color:#EBE6D2")
 
         self.botonIngresar = QPushButton("Ingresar",panelEstructura)
         self.botonIngresar.setGeometry(480,200,120,30)
@@ -137,6 +164,10 @@ class BusquedasInView(QGroupBox):
             self.labelTitIng.setVisible(True)
             self.labelCampResNum.setVisible(True)
             self.campoCampResNum.setVisible(True)
+            self.labelNombreA.setVisible(True)
+            self.campoNombreA.setVisible(True)
+            self.labelEdadA.setVisible(True)
+            self.campoEdadA.setVisible(True)
             self.botonIngresar.setVisible(True)
             self.botonBuscar.setVisible(True)
             self.imprimirTexto("Se ha creado la estructura exitosamente")
@@ -158,9 +189,15 @@ class BusquedasInView(QGroupBox):
 
     def ingresarDato(self):
         try:
-            res = self.estructura.ingresarDato(int(self.campoCampResNum.toPlainText()))
-            self.imprimirTexto(res)
-            self.refrescarTabla()
+            nombre = str(self.campoNombreA.toPlainText())
+            edad = 0 if self.campoEdadA.toPlainText()=="" else int(self.campoEdadA.toPlainText())
+            if(nombre!='' and edad!=0):
+                res = self.estructura.ingresarDato(int(self.campoCampResNum.toPlainText()))
+                self.imprimirTexto(res)
+                self.refrescarTabla()
+                self.campos.insertar(int(self.campoCampResNum.toPlainText()),nombre,edad)
+            else:
+                self.imprimirTexto("Error: Por favor ingrese el nombre y la edad")
         except Exception as e:
             error = QMessageBox()
             error.setText("La clave debe ser Numerica")
@@ -174,6 +211,7 @@ class BusquedasInView(QGroupBox):
             res = self.estructura.busqueda(int(self.campoCampResNum.toPlainText()))
             self.imprimirTexto(res)
             self.datoBuscado = int(self.campoCampResNum.toPlainText())
+            self.imprimirTexto(self.campos.obtener(self.datoBuscado))
             self.refrescarTabla()
         except Exception as e:
             error = QMessageBox()

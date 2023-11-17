@@ -7,7 +7,7 @@ from PyQt5 import QtGui
 
 from ExternasView.FuncionesHash import TransfClaves
 from ExternasView import BinariaSecuencial as BS
-
+from CamposView.Campos import Campos
 
 class ExternasView(QtW.QGroupBox):
 
@@ -15,6 +15,8 @@ class ExternasView(QtW.QGroupBox):
         
         super().__init__(p)
 
+        # variable para simulacion
+        self.campos=Campos()
         self.rango = None
         self.listaDatos = []
         self.registros = []
@@ -57,7 +59,7 @@ class ExternasView(QtW.QGroupBox):
         self.tamanoEstructura.setFont(QFont("Arial", 12))
         self.tamanoEstructura.setStyleSheet("background-color:#EBE6D2")
 
-        label = QtW.QLabel("Ingresar clave (Claves numéricas):", self)
+        label = QtW.QLabel("Ingresar clave:", self)
         label.move(20, 200)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.ingresoDato = QtW.QTextEdit(self)
@@ -66,6 +68,26 @@ class ExternasView(QtW.QGroupBox):
         self.ingresoDato.resize(140, 30)
         self.ingresoDato.setFont(QFont("Arial", 12))
         self.ingresoDato.setStyleSheet("background-color:#EBE6D2")
+
+        label = QtW.QLabel("Ingresar nombre:", self)
+        label.move(170, 200)
+        label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.campoNombreA = QtW.QTextEdit(self)
+        self.campoNombreA.setFrameStyle(1)
+        self.campoNombreA.move(170, 230)
+        self.campoNombreA.resize(140, 30)
+        self.campoNombreA.setFont(QFont("Arial", 12))
+        self.campoNombreA.setStyleSheet("background-color:#EBE6D2")
+
+        label = QtW.QLabel("Ingresar edad:", self)
+        label.move(320, 200)
+        label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.campoEdadA = QtW.QTextEdit(self)
+        self.campoEdadA.setFrameStyle(1)
+        self.campoEdadA.move(320, 230)
+        self.campoEdadA.resize(140, 30)
+        self.campoEdadA.setFont(QFont("Arial", 12))
+        self.campoEdadA.setStyleSheet("background-color:#EBE6D2")
 
         label = QtW.QLabel("Tipo de búsqueda:", self)
         label.move(20, 110)
@@ -91,11 +113,11 @@ class ExternasView(QtW.QGroupBox):
         self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
         label = QtW.QLabel("Clave a buscar:", self)
-        label.move(20, 290)
+        label.move(20, 320)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.txbuscar = QtW.QTextEdit(self)
         self.txbuscar.setFrameStyle(1)
-        self.txbuscar.move(20, 320)
+        self.txbuscar.move(20, 350)
         self.txbuscar.resize(140, 30)
         self.txbuscar.setFont(QFont("Arial", 12))
         self.txbuscar.setStyleSheet("background-color:#EBE6D2")
@@ -108,7 +130,7 @@ class ExternasView(QtW.QGroupBox):
         self.bnEstructura.clicked.connect(self.testEstructure)
 
         self.bnIngresar = QtW.QPushButton("Agregar clave", self)
-        self.bnIngresar.setGeometry(180, 230, 130, 30)
+        self.bnIngresar.setGeometry(50, 270, 170, 30)
         self.bnIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -116,7 +138,7 @@ class ExternasView(QtW.QGroupBox):
         self.bnIngresar.setEnabled(False)
 
         self.bnTerminar = QtW.QPushButton("Eliminar clave", self)
-        self.bnTerminar.setGeometry(320, 230, 130, 30)
+        self.bnTerminar.setGeometry(250, 270, 170, 30)
         self.bnTerminar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -124,7 +146,7 @@ class ExternasView(QtW.QGroupBox):
         self.bnTerminar.setEnabled(False)
 
         self.bnBuscar = QtW.QPushButton("Buscar", self)
-        self.bnBuscar.setGeometry(180, 320, 130, 30)
+        self.bnBuscar.setGeometry(180, 350, 130, 30)
         self.bnBuscar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -202,6 +224,26 @@ class ExternasView(QtW.QGroupBox):
                 self.imprimirTexto("Por Favor ingrese una clave mayor a 0")
                 return
             
+            nombre = self.campoNombreA.toPlainText()
+            edad = self.campoEdadA.toPlainText()
+            camposValidos = True
+            if not nombre.strip():
+                self.imprimirTexto("Por favor ingrese un nombre")
+                camposValidos = False
+            if not edad.isdigit():
+                self.imprimirTexto("Por ingrese un número en la edad")
+                camposValidos = False
+            else:
+                edad = int(edad)
+                if edad<0:
+                    self.imprimirTexto("La edad debe ser mayor a 0")
+                    camposValidos = False
+
+            if not camposValidos:
+                return
+
+            self.campos.insertar(d, nombre, edad)
+
             if self.metodo == "Mod" or self.metodo == "Cuadratico" or self.metodo == "Plegamiento" or self.metodo == "Truncamiento":
                 
                 if len(self.listaDatos) > self.rango-1:
@@ -217,6 +259,9 @@ class ExternasView(QtW.QGroupBox):
                     self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
                     self.funcionesHash()
                     self.ingresoDato.setText("")
+                    self.campoNombreA.setText('')
+                    self.campoEdadA.setText('')
+                    self.ingresoDato.setFocus()
                 else:
                     self.imprimirTexto("La clave ya se encuentra en la estructura")
                     return
@@ -235,6 +280,9 @@ class ExternasView(QtW.QGroupBox):
                     self.cargarDatosSecuencialesBinarios()
                     self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
                     self.ingresoDato.setText("")
+                    self.campoNombreA.setText('')
+                    self.campoEdadA.setText('')
+                    self.ingresoDato.setFocus()
                 else:
                     self.imprimirTexto("La clave ya se encuentra en la estructura")
                     return
@@ -258,6 +306,7 @@ class ExternasView(QtW.QGroupBox):
                 return
             else:
                 self.listaDatos.remove(d)
+                self.campos.eliminar(d)
                 self.tabla.setRowCount(0)
                 self.crearTabla()
                 self.cargarDatos()
@@ -298,6 +347,9 @@ class ExternasView(QtW.QGroupBox):
                     if r == i:
                         self.imprimirTexto(f"El dato {r} se encuentra ubicado en la cubeta {j}, en el bloque {bloque}")
                         self.resaltarElementoEncontrado(bloque, j)
+                        campos = self.campos.obtener(int(r))
+                        if not campos.startswith('El registro con la clave'):
+                            self.imprimirTexto(f"   {campos}")
                         encontrado = True
                         break
                     bloque += 1
@@ -314,8 +366,10 @@ class ExternasView(QtW.QGroupBox):
         ob = BS.Secuencial(bloque, numeroBloque, int(r))
         resultado = BS.Secuencial.busqueda(ob)
         self.registroProcess.setText(resultado)
+        campos = self.campos.obtener(int(r))
+        if not campos.startswith('El registro con la clave'):
+            self.imprimirTexto(f"   {campos}")
         if "no se encontró" not in resultado:
-            
             self.resaltarElementoEncontrado(numeroBloque - 1, bloque.index(int(r)))
         else:
             self.txbuscar.setText("")
@@ -328,6 +382,9 @@ class ExternasView(QtW.QGroupBox):
         tt = BS.Binario(bloque, numeroBloque, int(r))
         resultado = BS.Binario.busqueda(tt)
         self.registroProcess.setText(resultado)
+        campos = self.campos.obtener(int(r))
+        if not campos.startswith('El registro con la clave'):
+            self.imprimirTexto(f"   {campos}")
         if "no se encontró" not in resultado:
             
             self.resaltarElementoEncontrado(numeroBloque - 1, bloque.index(int(r)))
@@ -348,7 +405,7 @@ class ExternasView(QtW.QGroupBox):
         columnas = ['Cubetas']
         self.tablaBloques.setHorizontalHeaderLabels(columnas)
 
-         # Establecer el número de filas y columnas en la tabla
+        # Establecer el número de filas y columnas en la tabla
         filas = len(self.hash.diccionario)
         columnas = max(len(sublista) for sublista in self.hash.diccionario) + 1
 

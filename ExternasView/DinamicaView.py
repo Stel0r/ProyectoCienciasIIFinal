@@ -7,7 +7,7 @@ from PyQt5 import QtGui
 
 from ExternasView.FuncionesHash import TransfClaves
 from ExternasView import Dinamica as D
-
+from CamposView.Campos import Campos
 
 class DinamicaView(QtW.QGroupBox):
 
@@ -21,16 +21,17 @@ class DinamicaView(QtW.QGroupBox):
         self.pReduccion = 0
         self.estructura = None
         self.listaDatos = []
+        self.campos = Campos()
 
         self.setStyleSheet("background-color:#DECCA6")
 
         label = QtW.QLabel("Lista de datos:", self)
-        label.move(780, 240)
+        label.move(840, 240)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.tabla = QtW.QTableWidget(self)
         self.tabla.setColumnCount(2)
         self.tabla.setHorizontalHeaderLabels(["Lista espera", "Registro"])
-        self.tabla.setGeometry(780, 280, 500, 530)
+        self.tabla.setGeometry(840, 280, 200, 530)
         self.tabla.setFont(QFont("Arial", 12, QFont.Bold))
         self.tabla.horizontalScrollBar().setVisible(False)
         self.tabla.setColumnWidth(0, 100)
@@ -106,6 +107,26 @@ class DinamicaView(QtW.QGroupBox):
         self.ingresoDato.setFont(QFont("Arial", 12))
         self.ingresoDato.setStyleSheet("background-color:#EBE6D2")
 
+        label = QtW.QLabel("Ingresar nombre:", self)
+        label.move(170, 360)
+        label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.campoNombreA = QtW.QTextEdit(self)
+        self.campoNombreA.setFrameStyle(1)
+        self.campoNombreA.move(170, 380)
+        self.campoNombreA.resize(140, 30)
+        self.campoNombreA.setFont(QFont("Arial", 12))
+        self.campoNombreA.setStyleSheet("background-color:#EBE6D2")
+
+        label = QtW.QLabel("Ingresar edad:", self)
+        label.move(320, 360)
+        label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.campoEdadA = QtW.QTextEdit(self)
+        self.campoEdadA.setFrameStyle(1)
+        self.campoEdadA.move(320, 380)
+        self.campoEdadA.resize(140, 30)
+        self.campoEdadA.setFont(QFont("Arial", 12))
+        self.campoEdadA.setStyleSheet("background-color:#EBE6D2")
+
         self.labelSuccess = QtW.QLabel("Proceso: ", self)
         self.labelSuccess.move(20, 420)
         self.labelSuccess.setFont(QFont("Arial", 12, QFont.Bold))
@@ -114,20 +135,20 @@ class DinamicaView(QtW.QGroupBox):
         self.registroProcess = QtW.QTextEdit(self)
         self.registroProcess.setFrameStyle(1)
         self.registroProcess.move(20, 460)
-        self.registroProcess.resize(700, 360)
+        self.registroProcess.resize(730, 360)
         self.registroProcess.setReadOnly(True)
         self.registroProcess.setFont(QFont("Arial", 12))
         self.registroProcess.setStyleSheet("QTextEdit{border:1px solid black; background-color:#D0C0A7}")
 
         self.bnEstructura = QtW.QPushButton("Crear estructura", self)
-        self.bnEstructura.setGeometry(340, 320, 130, 30)
+        self.bnEstructura.setGeometry(470, 320, 130, 30)
         self.bnEstructura.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
         self.bnEstructura.clicked.connect(self.testEstructure)
 
         self.bnIngresar = QtW.QPushButton("Agregar clave", self)
-        self.bnIngresar.setGeometry(180, 380, 130, 30)
+        self.bnIngresar.setGeometry(470, 380, 130, 30)
         self.bnIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -135,15 +156,23 @@ class DinamicaView(QtW.QGroupBox):
         self.bnIngresar.setEnabled(False)
 
         self.bnTerminar = QtW.QPushButton("Eliminar clave", self)
-        self.bnTerminar.setGeometry(320, 380, 130, 30)
+        self.bnTerminar.setGeometry(610, 380, 130, 30)
         self.bnTerminar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
         self.bnTerminar.clicked.connect(self.eliminarDato)
         self.bnTerminar.setEnabled(False)
 
+        self.bnVerCampos = QtW.QPushButton("Ver campos clave", self)
+        self.bnVerCampos.setGeometry(470, 420, 130, 30)
+        self.bnVerCampos.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
+                                        "QPushButton::hover{background-color :#8fa89a;}"
+                                        "QPushButton::pressed{background-color:#6e8679; }")
+        self.bnVerCampos.clicked.connect(self.verDatos)
+        self.bnVerCampos.setEnabled(False)
+
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
-        self.bnReiniciar.setGeometry(20, 840, 500, 30)
+        self.bnReiniciar.setGeometry(140, 840, 500, 30)
         self.bnReiniciar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
                                    "QPushButton::hover{background-color :#D4C2AD;}"
                                    "QPushButton::pressed{background-color:#EFDFCC; }")
@@ -177,6 +206,7 @@ class DinamicaView(QtW.QGroupBox):
         self.bnIngresar.setEnabled(True)
         self.bnTerminar.setEnabled(True)
         self.bnReiniciar.setEnabled(True)
+        self.bnVerCampos.setEnabled(True)
 
     def ingresarDato(self):
         d = 0
@@ -186,6 +216,24 @@ class DinamicaView(QtW.QGroupBox):
             if(d <= 0):
                 self.imprimirTexto("Por Favor ingrese una clave mayor a 0")
                 return
+            nombre = self.campoNombreA.toPlainText()
+            edad = self.campoEdadA.toPlainText()
+            camposValidos = True
+            if not nombre.strip():
+                self.imprimirTexto("Por favor ingrese un nombre")
+                camposValidos = False
+            if not edad.isdigit():
+                self.imprimirTexto("Por ingrese un número en la edad")
+                camposValidos = False
+            else:
+                edad = int(edad)
+                if edad<0:
+                    self.imprimirTexto("La edad debe ser mayor a 0")
+                    camposValidos = False
+            if not camposValidos:
+                return
+
+            self.campos.insertar(d, nombre, edad)
             if d not in self.listaDatos:
                 self.estructura.historico = []
                 self.estructura.event = False
@@ -219,6 +267,7 @@ class DinamicaView(QtW.QGroupBox):
                 return
             else:
                 self.listaDatos.remove(d)
+                self.campos.eliminar(d)
                 self.tabla.setRowCount(0)
                 self.crearTabla()
                 self.estructura.deleteClave(d)
@@ -274,6 +323,7 @@ class DinamicaView(QtW.QGroupBox):
         self.bnReiniciar.setEnabled(False)
         self.bnTerminar.setEnabled(False)
         self.bnIngresar.setEnabled(False)
+        self.bnVerCampos.setEnabled(False)
         self.registroProcess.setText("")
         
     def imprimirTexto(self,texto:str):
@@ -286,3 +336,15 @@ class DinamicaView(QtW.QGroupBox):
         error.setStyleSheet("background-color:white; border: 0pc solid white")
         error.setFont(QFont("Arial", 10, QFont.Bold))
         error.exec_()
+
+    def verDatos(self):
+        try:
+            mensaje = self.campos.obtener(int(self.ingresoDato.toPlainText()))
+        except:
+            mensaje = 'Clave invalida'
+        emergente = QtW.QMessageBox(self)
+        emergente.setIcon(QtW.QMessageBox.Icon.Information)
+        emergente.setText(mensaje)
+        emergente.setStyleSheet("background-color:white; border: 0pc solid white")
+        emergente.setFont(QFont("Arial", 10, QFont.Bold))
+        emergente.exec_()
