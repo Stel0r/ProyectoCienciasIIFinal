@@ -6,6 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5 import QtGui
 
 from HashDirectory.Hash import TransfClaves
+from CamposView.Campos import Campos
 
 class HashView(QtW.QGroupBox):
 
@@ -13,6 +14,8 @@ class HashView(QtW.QGroupBox):
         super().__init__(p)
 
         self.hash = None
+        # variable para la informacion
+        self.campos=Campos()
 
         self.setStyleSheet("background-color:#DECCA6")
 
@@ -58,15 +61,35 @@ class HashView(QtW.QGroupBox):
         self.tamanoEstructura.setFont(QFont("Arial", 12))
         self.tamanoEstructura.setStyleSheet("background-color:#EBE6D2")
 
-        label = QtW.QLabel("Ingresar clave (Solo se admiten claves numéricas)", self)
+        label = QtW.QLabel("Ingresar clave", self)
         label.move(10, 100)
         label.setFont(QFont("Arial", 12, QFont.Bold))
         self.ingresoDato = QtW.QTextEdit(self)
         self.ingresoDato.setFrameStyle(1)
         self.ingresoDato.move(10, 140)
-        self.ingresoDato.resize(200, 30)
+        self.ingresoDato.resize(150, 30)
         self.ingresoDato.setFont(QFont("Arial", 12))
         self.ingresoDato.setStyleSheet("background-color:#EBE6D2")
+
+        label = QtW.QLabel("Ingresar nombre", self)
+        label.move(190, 100)
+        label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.campoNombreA = QtW.QTextEdit(self)
+        self.campoNombreA.setFrameStyle(1)
+        self.campoNombreA.move(190, 140)
+        self.campoNombreA.resize(200, 30)
+        self.campoNombreA.setFont(QFont("Arial", 12))
+        self.campoNombreA.setStyleSheet("background-color:#EBE6D2")
+
+        label = QtW.QLabel("Ingresar edad", self)
+        label.move(420, 100)
+        label.setFont(QFont("Arial", 12, QFont.Bold))
+        self.campoEdadA = QtW.QTextEdit(self)
+        self.campoEdadA.setFrameStyle(1)
+        self.campoEdadA.move(420, 140)
+        self.campoEdadA.resize(100, 30)
+        self.campoEdadA.setFont(QFont("Arial", 12))
+        self.campoEdadA.setStyleSheet("background-color:#EBE6D2")
 
         self.labelWarning = QtW.QLabel("Error: ", self)
         self.labelWarning.move(10, 300)
@@ -115,7 +138,7 @@ class HashView(QtW.QGroupBox):
         self.bnEstructura.clicked.connect(self.testEstructure)
 
         self.bnIngresar = QtW.QPushButton("Agregar", self)
-        self.bnIngresar.setGeometry(220, 140, 170, 30)
+        self.bnIngresar.setGeometry(570, 140, 170, 30)
         self.bnIngresar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                         "QPushButton::hover{background-color :#8fa89a;}"
                                         "QPushButton::pressed{background-color:#6e8679; }")
@@ -123,13 +146,16 @@ class HashView(QtW.QGroupBox):
         self.bnIngresar.clicked.connect(self.ingresarDato)
 
         self.bnReiniciar = QtW.QPushButton("Reiniciar", self)
-        self.bnReiniciar.setGeometry(570, 140, 170, 30)
+        self.bnReiniciar.setGeometry(570, 260, 170, 30)
         self.bnReiniciar.setStyleSheet("QPushButton{background-color:#D7A184; border:1px solid black;}"
                                    "QPushButton::hover{background-color :#D4C2AD;}"
                                    "QPushButton::pressed{background-color:#EFDFCC; }")
         self.bnReiniciar.setFont(QFont("Arial", 12))
         self.bnReiniciar.clicked.connect(self.reiniciar)
         self.bnReiniciar.setEnabled(False)
+
+    def imprimirTexto(self,texto:str):
+        self.registroProcess.setText(self.registroProcess.toPlainText()+"\n >"+texto)
 
     def testEstructure(self):
         t = 0
@@ -167,12 +193,18 @@ class HashView(QtW.QGroupBox):
         except:
             self.errWarning("Ingrese únicamente claves numéricas")
             return
+        nombre = str(self.campoNombreA.toPlainText())
+        edad = 0 if self.campoEdadA.toPlainText()=="" else int(self.campoEdadA.toPlainText())
+        if(nombre!='' and edad!=0):
+            self.hash.ingresarValor(d)
+            self.processSuccess("Dato Ingresado (" + str(d) + ")")
+            self.errWarning("")
+            self.cargarDatos()
+            self.registrarProceso()
+            self.campos.insertar(d,nombre,edad)
+        else:
+            self.imprimirTexto("Error: Por favor ingrese el nombre y la edad")
 
-        self.hash.ingresarValor(d)
-        self.processSuccess("Clave insertada (" + str(d) + ")")
-        self.errWarning("")
-        self.cargarDatos()
-        self.registrarProceso()
     def errWarning(self, mensaje):
         self.labelWarning.setText("Error: " + mensaje)
 
@@ -189,6 +221,7 @@ class HashView(QtW.QGroupBox):
         self.bnReiniciar.setEnabled(False)
         self.registroProcess.setText("")
         self.labelSuccess.setText("Success:")
+        self.campos.reset()
 
     def crearTabla(self):
         for i in range(0, self.hash.tamaño):
@@ -217,5 +250,5 @@ class HashView(QtW.QGroupBox):
         except:
             self.imprimirTexto("Ingreso para registro caracteres no numericos")
             return
-
         self.registroProcess.setText(self.hash.buscarElemento(r))
+        self.imprimirTexto(self.campos.obtener(r))
