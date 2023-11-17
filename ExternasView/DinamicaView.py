@@ -137,7 +137,7 @@ class DinamicaView(QtW.QGroupBox):
 
 
         """ Buscar clave """
-        self.bnBuscar = QtW.QPushButton("Buscar clave", self)
+        self.bnBuscar = QtW.QPushButton("Búscar clave", self)
         self.bnBuscar.setGeometry(320, 380, 130, 30)
         self.bnBuscar.setStyleSheet("QPushButton{background-color:#b0c9bb; border:1px solid black;}"
                                     "QPushButton::hover{background-color :#8fa89a;}"
@@ -350,10 +350,7 @@ class DinamicaView(QtW.QGroupBox):
         self.limpiarEstructura()
         
 
-        # """ Limpiando  campos """
-        # self.numcubeta.setText("")
-        # self.numregistro.setText("")
-        
+   
         
    
 
