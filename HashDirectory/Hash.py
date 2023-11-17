@@ -95,6 +95,9 @@ class TransfClaves():
     return clave
 
   def ingresarValor(self, value):
+    if (value in self.estructura.values()):
+      self.mError = "la clave ya se encuentra en la estructura"
+      return
     self.mIngreso = ""
     self.mError = ""
     self.mColision = ""
