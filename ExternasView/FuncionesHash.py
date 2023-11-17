@@ -2,32 +2,41 @@ class TransfClaves():
 
   def obtenerClave(self,value):
     if (self.fn == "Mod"):
-      clave = (value % self.tamaño) + 1
+      clave = (value % self.tamaño)
     elif (self.fn == "Cuadratico"):
       potencia = value**2
       init = (len(str(potencia))-1) // 2 if len(str(potencia)) %2 == 0 else len(str(potencia))//2
       claveTemp = str(potencia) [init:init + len(str(self.tamaño - 1))]
       clave = 1 if claveTemp == "" else int(claveTemp) + 1
     elif (self.fn == "Truncamiento"):
-      init = len(str(self.tamaño)) - 1
-      if init == 0:
-        init += 1
-      value_str = str(value)
-      sub_strings = [
-          int(digit) for i, digit in enumerate(value_str) if i % 2 == 0
-      ]
-      clave = int(''.join(str(num) for num in sub_strings)) + 1
+      posiciones = [i for i in range(1, len(str(value)) + 1, 2)]
+      digitos = []
+      str_key = str(value)
+
+      for posicion in posiciones:
+          if len(str(self.tamaño))-1 > len(digitos):
+            digito = str_key[posicion - 1] if posicion - 1 < len(str_key) else '0'
+            digitos.append(digito)
+
+      nueva_key = int(''.join(digitos)) + 1
+      clave = nueva_key
     elif (self.fn == "Plegamiento"):
-      init = len(str(self.tamaño)) - 1
-      if init == 0:
-        init += 1
-      value_str = str(value)
-      sub_strings = [
-          value_str[i:i + init] for i in range(0, len(value_str), init)
-      ]
-      clave = sum(int(sub) for sub in sub_strings) + 1
-      if clave > self.tamaño:
-        clave = clave % (10**init)
+      digitos_de_rango = len(str(self.tamaño)) - 1
+      numeros_significativos = 1 if digitos_de_rango == 0 else digitos_de_rango
+
+      str_key = str(value)
+      digitos_de_key = len(str_key)
+      suma_digitos = 0
+
+      for i in range(0, digitos_de_key, numeros_significativos):
+          suma_digitos += int(str_key[i:i + numeros_significativos])
+
+      str_sum_digs = str(suma_digitos)
+
+      if len(str_sum_digs) >= numeros_significativos + 1:
+          suma_digitos = int(str_sum_digs[-numeros_significativos:])
+
+      clave = suma_digitos + 1
     else:
         raise Exception("La Funcion Dada no es Valida")
     return clave

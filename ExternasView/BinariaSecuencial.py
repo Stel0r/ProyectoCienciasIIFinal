@@ -38,9 +38,8 @@ import math
 
 
 def calcular_tamano_bloques(total_registros):
-    tamano_bloque = math.ceil(math.sqrt(total_registros))
+    tamano_bloque = math.floor(math.sqrt(total_registros))
     return tamano_bloque
-
 
 def guardar_en_bloques(datos, tamano_bloque):
     multilista = []
