@@ -206,19 +206,20 @@ class DinamicaView(QtW.QGroupBox):
                 self.listaDatos.append(d)
                 self.estructura.insertClave(d)
                 self.imprimirTexto("Dato Ingresado (" + str(d) + ")")
+                self.cargarDatos()
                 self.ingresoDato.setText("")
                 self.mostrarEstructura()
                 if self.estructura.event:
                     self.estructura.event = False
                     self.warningError("La estructura se va a expandir")
-                    self.cargarDatos()
+                
                     
                     self.mostrarEstructura()
                     
             else:
                 self.imprimirTexto("La clave ya se encuentra en la estructura")
                 return
-            self.cargarDatos()
+          
         except:
             self.imprimirTexto("La clave no puede tener caracteres no numericos")
             return
