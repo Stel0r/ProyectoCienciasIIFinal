@@ -200,6 +200,7 @@ class IndicesView(QtW.QGroupBox):
 
     def buildUnNivel(self, ListaDatos):
         L = [ListaDatos[2], ListaDatos[3], ListaDatos[0], ListaDatos[1]]
+        #L = ListaDatos
         self.ListaEstructuras[0].setVisible(True)
         self.ListaEstructuras[1].setVisible(True)
         self.ListaTitulos[0].setVisible(True)
@@ -214,9 +215,9 @@ class IndicesView(QtW.QGroupBox):
                 self.ListaTitulos[i].setText("Estructura Principal")
             for j in range(1, (L[i*2]*L[(i*2)+1])):
                 U = "Usado"
-                if j > self.logica.Registros and i == 0:
+                if j > self.logica.Registros and i == 1:
                     U = "Sin Usar" 
-                elif j > L[1] and i == 1:
+                elif j > L[3] and i == 0:
                     U = "Sin Usar"
                 bloque_actual = j // L[i*2] + 1
                 self.ListaEstructuras[i].insertRow(j-1)
