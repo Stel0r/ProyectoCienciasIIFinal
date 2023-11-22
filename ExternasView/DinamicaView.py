@@ -198,9 +198,9 @@ class DinamicaView(QtW.QGroupBox):
 
         self.cubetas = cub
         self.registros = reg
-        self.doexpansion = exp
-        self.doreduccion = red
-        self.estructura = D.Dinamicas(self.cubetas, self.registros, self.doexpansion, self.doreduccion, self.opcionMetodo.currentText())
+        self.pexpansion = exp
+        self.preduccion = red
+        self.estructura = D.Dinamicas(self.cubetas, self.registros, self.pexpansion, self.preduccion, self.opcionMetodo.currentText())
         self.imprimirTexto("Estructura definida")
         self.bnEstructura.setEnabled(False)
         self.bnIngresar.setEnabled(True)
@@ -317,6 +317,14 @@ class DinamicaView(QtW.QGroupBox):
                 self.tablaBloques.setItem(i, j, QtW.QTableWidgetItem(str(x)))
 
     def reiniciar(self):
+        self.cubetas = 0
+        self.registros = 0
+        self.pExpaxion = 0
+        self.pReduccion = 0
+        self.estructura = None
+        self.listaDatos = []
+        self.campos = Campos()
+
         self.rango = None
         self.listaDatos = []
         self.bnEstructura.setEnabled(True)
